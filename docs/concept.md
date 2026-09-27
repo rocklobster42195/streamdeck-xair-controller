@@ -99,6 +99,12 @@ The mixer sends a color **index 0–15**, not hex: 0 off, 1–7 red, green, yell
 - **Inverted colors:** the key stays dark, and the frame and name take the color.
 - A muted red channel also gets the mute icon and hatching, so color is never the only signal.
 
+## Kit bus (later)
+
+XAC is the audio source for the kit bus (see the MQC concept, "Kit bus"):
+- **Meter levels on the bus** (e.g. the Sonos channel or Main LR), so MAC's Panorama effects become audio-reactive.
+- **Ducking:** MAC's Announcement key lowers the Sonos channel through XAC and raises it again afterwards. Both plugins must allow this explicitly.
+
 ## Mixer connection
 
 - **One mixer for the whole plugin**, stored in the global settings and set up through a connection card (as in MAC). The card lists mixers found by the `/xinfo` broadcast ("Name [XR12] – IP"), and an IP can also be entered by hand. Several mixers come later.
