@@ -17,7 +17,7 @@ X32/M32 support may come later; the client is designed so it can be added.
 
 | | |
 |---|---|
-| Display name | **X-Air Controller** (short: **XAC**) |
+| Display name | **X-Air Controller**, public short name **XR-C** (internally XAC; pattern <system>-C, decided 2026-09-27) |
 | UUID | `de.boriskemper.xair-controller` (the old internal prototype, never public) |
 | Repository | `rocklobster42195/streamdeck-xair-controller`, private until release |
 | Folder | `C:\dev\xair-controller` (fresh start, without the old prototype's history) |
