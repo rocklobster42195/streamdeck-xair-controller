@@ -21,7 +21,7 @@ X32/M32 support may come later; the client is designed so it can be added.
 | UUID | `de.boriskemper.xair-controller` (the old internal prototype, never public) |
 | Repository | `rocklobster42195/streamdeck-xair-controller`, private until release |
 | Folder | `C:\dev\xair-controller` (fresh start, without the old prototype's history) |
-| Logo | the Rocklobster lobster on a petrol/teal background (a variant with fader knobs is worth trying) |
+| Logo | the Rocklobster lobster on **Persian Green `#00ACA8`** from the house palette (a variant with fader knobs is worth trying). Logo colors come from the house palette; Sage `#87AE73` is the company color. |
 | Legal | "X-Air" is a Behringer trademark: disclaimer (not affiliated with Behringer or Music Tribe), no Behringer logos |
 
 ## Terms
@@ -160,7 +160,7 @@ As in MAC: English and German UI (one locale file per language), English code co
 
 - **M0, client base** (can start any time; it does not depend on the kit): transport, codec, discovery, `dump` CLI. Then one read-only dump of the XR12, **with the user's OK**, to settle the open OSC questions.
 - **M1, `xair-client` 0.1 on npm:** typed layer, emulator, tests.
-- **M2, plugin v0.1 beta:** starts after the kit carve-out, and **MQC comes first**. Contents: Fader dial with meter, Mute, Meter key, connection card, simulator scenarios.
+- **M2, plugin v0.1 beta:** starts after the **MAC go-live** and the kit carve-out. Whether XAC or MQC comes first is still open (decided 2026-09-27). Contents: Fader dial with meter, Mute, Meter key, connection card, simulator scenarios.
 - **M3, v1.0 for the Marketplace:** Send dial, Mute Group, Snapshot, EN/DE, screenshots, README.
 
 ## Facts from the XR12 dump (2026-09-27, read-only)
