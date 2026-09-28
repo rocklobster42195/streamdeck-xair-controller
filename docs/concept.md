@@ -99,11 +99,18 @@ The mixer sends a color **index 0–15**, not hex: 0 off, 1–7 red, green, yell
 - **Inverted colors:** the key stays dark, and the frame and name take the color.
 - A muted red channel also gets the mute icon and hatching, so color is never the only signal.
 
-## Kit bus (later)
+## Kit bus "deckbus"
 
-XAC is the audio source for the kit bus (see the MQC concept, "Kit bus"):
-- **Meter levels on the bus** (e.g. the Sonos channel or Main LR), so MAC's Panorama effects become audio-reactive.
-- **Ducking:** MAC's Announcement key lowers the Sonos channel through XAC and raises it again afterwards. Both plugins must allow this explicitly.
+XAC is the first partner for MAC on the bus; SC stays out for now. The design is in the MQC concept ("Kit bus") and in `C:\dev\streamdeck-kit\notes\2026-09-28-kit-bus-grill.md`.
+- **Meters:**
+  - XAC offers all channels in its bus state (`streams`, with live mixer names). MAC's Panorama dial picks one as its "Audio source".
+  - XAC asks the mixer for a channel's meters only while a subscriber exists, and subscribers subscribe only while a consumer is visible.
+  - About 20 messages per second, dB per side with one decimal.
+- **Ducking:**
+  - MAC's Announcement key lowers a channel through XAC as a **lease**: XAC restores it on its own on `unduck`, when the maximum time runs out, or when MAC leaves the bus.
+  - XAC restores exactly the previous fader. If someone moved the fader by hand meanwhile, the hand wins.
+  - With several duckers, the deepest one wins.
+  - XAC allows it only for plugins ticked in its connection settings. Nobody is ticked by default.
 
 ## Mixer connection
 
@@ -166,7 +173,15 @@ As in MAC: English and German UI (one locale file per language), English code co
 
 - **M0, client base** (can start any time; it does not depend on the kit): transport, codec, discovery, `dump` CLI. Then one read-only dump of the XR12, **with the user's OK**, to settle the open OSC questions.
 - **M1, `xair-client` 0.1 on npm:** typed layer, emulator, tests.
-- **M2, plugin v0.1 beta:** starts after the **MAC go-live** and the kit carve-out. Whether XAC or MQC comes first is still open (decided 2026-09-27). Contents: Fader dial with meter, Mute, Meter key, connection card, simulator scenarios. Update 2026-09-28: probably XAC first, as a **minimal start** (volume, mute, meter), right after the first kit bus test between SC and MAC; the user is keen to see the meters.
+- **M2, plugin v0.1 beta:** starts after the **MAC go-live** and the kit carve-out. Whether XAC or MQC comes first is still open (decided 2026-09-27). Contents: Fader dial with meter, Mute, Meter key, connection card, simulator scenarios. Update 2026-09-28 (kit bus grill): **XAC comes first, before MQC and before the bus.** The order is:
+
+1. `xair-client`
+2. XAC minimal on the kit (Fader dial with meter, Mute, Meter key); the kit gets `scale`, `bar` and `peak` for it
+3. the bus core in the kit
+4. the bus in XAC and MAC (offering meters)
+5. ducking
+
+The user is keen to see the meters.
 - **M3, v1.0 for the Marketplace:** Send dial, Mute Group, Snapshot, EN/DE, screenshots, README.
 
 ## Facts from the XR12 dump (2026-09-27, read-only)
