@@ -39,7 +39,25 @@ A **strip** is anything with a fader and a mute: input channel, aux/USB input, F
 | **Mute Group** | Key | Mute group 1–4. |
 | **Snapshot** | Key | Loads a snapshot by index and shows its name. |
 
-Later, in this order: meter bridge (across keys or the whole Stream Deck + strip), solo, macro key, channel-strip dial and bus-mix dial, pan/gain/FX parameters, tap tempo, X32/M32, USB recorder (the user: "USB ist gerade nicht wichtig").
+Later, in this order: meter bridge (across keys or the whole Stream Deck + strip), solo, macro key, channel-strip dial and bus-mix dial, pan/gain/FX parameters, tap tempo, X32/M32.
+
+**USB stick player (idea, reconsidered 2026-09-28; before: "USB ist gerade nicht wichtig"):** play single tracks from the mixer's USB stick by key or dial (jingles, break music, clips).
+- **Hardware:**
+  - XR12 and XR16 only; the XR18 and MR18 have no stick recorder.
+  - WAV only, 16-bit, 44.1 or 48 kHz matching the mixer; no MP3.
+  - FAT32, a USB 2.0 stick.
+  - One file at a time, as a stereo track on the mixer's USB input.
+- **OSC:**
+  - Known from the dump: `/-stat/tape/state|file|etime`, `/-stat/usbmounted`.
+  - Unknown: how to list the stick's files and load or start one. The X32 has `/-usb/dir/…` and `/-action/…`; X-Air is unverified.
+- **Plan:**
+  1. A read-only USB dump with a stick inserted (`xair-client dump <ip> --usb`).
+  2. A playback test, only with the user's OK (it makes sound; the USB channel low first).
+  3. Then the actions:
+     - **Clip key:** plays one file chosen from the stick's list; shows name, time left and a progress ring; a second press stops.
+     - **Stick dial:** rotate browses the files, push plays. Same list UI as MAC's planned search (entry snaps, click starts), without covers.
+     - Transport and the USB channel's level (e.g. through the Fader dial).
+- **Limits:** some delay between press and sound (the mixer loads the file from the stick); a new file stops the running one.
 
 ### Fader dial
 
