@@ -19,7 +19,10 @@ export class MuteGroupKey extends MixerKey<MuteGroupSettings> {
         const scenes = mixerConnection.scenes;
         const group = Number(inst.settings.group ?? 1);
         if (!scenes) return undefined;
-        const members = scenes.muteGroupMembers(group).map((c) => stripName({ kind: "ch", n: c }, mixerConnection.strip({ kind: "ch", n: c })?.name ?? ""));
+        const all = scenes.muteGroupMembers(group);
+        // A linked stereo pair is one channel on the console: list only its first half
+        const shown = all.filter((c) => !(c % 2 === 0 && all.includes(c - 1) && mixerConnection.strip({ kind: "ch", n: c - 1 })?.linked));
+        const members = shown.map((c) => stripName({ kind: "ch", n: c }, mixerConnection.strip({ kind: "ch", n: c })?.name ?? ""));
         return renderMuteGroupKey({ title: inst.settings.title?.trim() || `MG ${group}`, active: scenes.muteGroupActive(group), members, noMembers: streamDeck.i18n.t("key.no_members") });
     }
 
