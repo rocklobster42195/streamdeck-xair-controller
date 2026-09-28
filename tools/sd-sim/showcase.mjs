@@ -1,6 +1,6 @@
-// README pictures: XR-C on a Stream Deck + (drawn housing, the real plugin, the xair-client
+// The README's GIF: XR-C on a Stream Deck + (drawn housing, the real plugin, the xair-client
 // emulator with synthetic music, invented names). Plays nothing anywhere.
-//   node tools/sd-sim/showcase.mjs        → docs/screenshots/*.png and xr-c.gif
+//   node tools/sd-sim/showcase.mjs        → docs/screenshots/xr-c.gif
 import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
@@ -56,7 +56,7 @@ async function scene(name, values, quiet, build, after) {
 const dial = (sim, s, column) => sim.add(s.send ? "send-dial" : "fader-dial", s, { column, controller: "Encoder" });
 const key = (sim, a, s, column, row) => sim.add(a, s, { column, row });
 
-// ---- 1. Living room: the mixer as the home's audio desk ----
+// ---- the living room: the mixer as the home's audio desk ----
 const living = {
     "/ch/01/config/name": ["Sonos"], "/ch/01/config/color": [4], "/config/chlink/1-2": [1],
     "/ch/03/config/name": ["TV"], "/ch/03/config/color": [6], "/config/chlink/3-4": [1],
@@ -68,51 +68,7 @@ const living = {
     "/lr/mix/fader": [0.7], "/ch/01/mix/fader": [0.7], "/ch/03/mix/fader": [0.62],
     "/-snap/index": [1], "/-snap/01/name": ["Evening"], "/-snap/02/name": ["Party"], "/-snap/03/name": ["Movie"],
 };
-await scene("living-room", living, [4, 5, 7], (sim) => {
-    dial(sim, { strip: "lr:1" }, 0);
-    dial(sim, { strip: "ch:1", style: "classic" }, 1);
-    dial(sim, { strip: "ch:3", style: "ring" }, 2);
-    dial(sim, { strip: "ch:1", target: "bus:1", send: true, style: "pie" }, 3);
-    key(sim, "channel-key", { strip: "ch:1" }, 0, 0);
-    key(sim, "channel-key", { strip: "ch:3" }, 1, 0);
-    key(sim, "channel-key", { strip: "ch:5" }, 2, 0);
-    key(sim, "channel-key", { strip: "ch:7" }, 3, 0);
-    key(sim, "snapshot-key", { snapshot: "1" }, 0, 1);
-    key(sim, "snapshot-key", { snapshot: "2" }, 1, 1);
-    key(sim, "snapshot-key", { snapshot: "3" }, 2, 1);
-    key(sim, "channel-key", { strip: "lr:1", look: "meter" }, 3, 1);
-});
-
-// ---- 2. Rehearsal: band channels, mute groups, sends to the monitor bus ----
-const band = {
-    "/ch/01/config/name": ["Vocals"], "/ch/01/config/color": [5],
-    "/ch/02/config/name": ["Backing"], "/ch/02/config/color": [13],
-    "/ch/03/config/name": ["Guitar"], "/ch/03/config/color": [7],
-    "/ch/04/config/name": ["Bass"], "/ch/04/config/color": [3],
-    "/ch/05/config/name": ["Keys"], "/ch/05/config/color": [4], "/config/chlink/5-6": [1],
-    "/ch/07/config/name": ["Drums"], "/ch/07/config/color": [2], "/config/chlink/7-8": [1],
-    "/ch/03/grp/mute": [1], "/ch/04/grp/mute": [1], "/ch/07/grp/mute": [1], "/ch/08/grp/mute": [1], "/ch/05/grp/mute": [2], "/ch/06/grp/mute": [2],
-    "/config/mute/2": [1],
-    "/bus/1/config/name": ["Monitor"], "/fxsend/1/config/name": ["Reverb"],
-    "/ch/01/mix/01/level": [0.66], "/ch/01/mix/01/tap": [3], "/ch/01/mix/07/level": [0.5], "/ch/01/mix/07/tap": [4],
-    "/ch/01/mix/fader": [0.72], "/ch/07/mix/fader": [0.68],
-};
-await scene("rehearsal", band, [], (sim) => {
-    dial(sim, { strip: "ch:1" }, 0);
-    dial(sim, { strip: "ch:1", target: "bus:1", send: true }, 1);
-    dial(sim, { strip: "ch:1", target: "fx:1", send: true, style: "ring" }, 2);
-    dial(sim, { strip: "ch:7", style: "classic" }, 3);
-    key(sim, "channel-key", { strip: "ch:1", look: "meter" }, 0, 0);
-    key(sim, "channel-key", { strip: "ch:3" }, 1, 0);
-    key(sim, "channel-key", { strip: "ch:4" }, 2, 0);
-    key(sim, "channel-key", { strip: "ch:2" }, 3, 0);
-    key(sim, "mute-group-key", { group: "1", title: "Band" }, 0, 1);
-    key(sim, "mute-group-key", { group: "2", title: "Keys" }, 1, 1);
-    key(sim, "channel-key", { strip: "ch:5", look: "meter" }, 2, 1);
-    key(sim, "channel-key", { strip: "ch:7", look: "meter" }, 3, 1);
-});
-
-// ---- 3. The eye-catcher: the living room, animated (meters, a fader move, a mute) ----
+// ---- the README's eye-catcher: the living room, animated (meters, a fader move, a mute) ----
 await scene("xr-c", living, [4, 5], (sim) => {
     dial(sim, { strip: "lr:1" }, 0);
     dial(sim, { strip: "ch:1", style: "classic" }, 1);

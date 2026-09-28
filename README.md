@@ -14,7 +14,6 @@ XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** ont
 
 ## Contents
 
-- [What it looks like](#what-it-looks-like)
 - [Highlights](#highlights)
 - [Requirements](#requirements)
 - [Getting started](#getting-started)
@@ -28,20 +27,6 @@ XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** ont
 - [Credits and licence](#credits-and-licence)
 
 ---
-
-## What it looks like
-
-**At home:** the mixer as the living room's audio desk. Sonos, TV and a turntable come in on stereo channels, and a mic is muted. There are three snapshots for different times of the day. The dials show Main LR as LED bars, Sonos as analog VU meters, the TV level as a ring, and the Sonos send into the kitchen as a pie.
-
-![A Stream Deck + with XR-C in a living room setup](docs/screenshots/living-room.png)
-
-**At a rehearsal:** band channels with their scribble strip colours, and two mute groups ("Band" is switched off, "Keys" is active, so its channel shows a red frame). The dials show the singer's fader, the singer's sends to the monitor bus and the reverb, and the drums on VU meters.
-
-![A Stream Deck + with XR-C at a band rehearsal](docs/screenshots/rehearsal.png)
-
-**The meters up close:** digital LED bars and the analog "Classic" VU meters, in stereo and mono, following a live signal. Midway, someone pulls the Vocals fader down on the mixer, and the marker and the meter follow.
-
-![Meter styles: digital and classic, stereo and mono](docs/screenshots/meters.gif)
 
 ## Highlights
 
@@ -75,11 +60,7 @@ XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** ont
 
    The card turns green and shows model, name, address and firmware. Every XR-C action shares this connection, so you set it up once.
 
-   ![The mixer card: search and connect](docs/screenshots/settings-setup.png)
-
 4. **Pick a channel.** The list shows the names from your mixer; stereo channels are marked "stereo".
-
-   ![Settings of a Fader dial](docs/screenshots/settings-fader.png)
 
 **Over a VPN** the search can't reach the mixer, because broadcasts don't pass through VPN tunnels. Type the address instead. The VPN must route the mixer's network.
 
@@ -265,7 +246,7 @@ npm run sim:meters     # Fader dials against the emulator → sim-out/meters/
 npm run sim:keys       # Channel keys in every look and mute state → sim-out/keys/
 npm run sim:scenes     # Send dials, Mute Group and Snapshot keys → sim-out/scenes/
 npm run pi:preview     # settings panels in a browser with invented data → http://localhost:5299/fader-dial.html
-npm run showcase       # the README pictures → docs/screenshots/
+npm run showcase       # the README's GIF → docs/screenshots/xr-c.gif
 npm run icons          # regenerate icons
 ```
 
@@ -273,7 +254,7 @@ XR-C is built on two packages of its own:
 - [`xair-client`](https://github.com/rocklobster42195/xair-client): the X-Air OSC client, with an emulator for tests.
 - [`@rocklobster42195/streamdeck-kit`](https://github.com/rocklobster42195/streamdeck-kit): shared Stream Deck building blocks such as meters, gauges and the settings panel kit.
 
-Both are linked from local checkouts until they are published on npm. All pictures in this README come from the real plugin running against the emulator, with invented channel names.
+Both are linked from local checkouts until they are published on npm. The GIF at the top comes from the real plugin running against the emulator, with invented channel names.
 
 ## Credits and licence
 
