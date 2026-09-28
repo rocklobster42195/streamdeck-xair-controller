@@ -1,7 +1,7 @@
 // The plugin's one mixer: global settings (the mixer's IP), the XAirMixer and its strips, and a
 // change signal for keys, dials and the settings panel. Reconnects when the IP changes.
 import streamDeck from "@elgato/streamdeck";
-import { XAirMixer, XAirStrips, type Strip, type StripRef } from "xair-client";
+import { XAirMixer, XAirScenes, XAirSends, XAirStrips, type Strip, type StripRef } from "xair-client";
 
 export type GlobalSettings = {
     /** The mixer's IP address or host name, optionally with a port ("192.168.1.50", "127.0.0.1:10125"). */
@@ -15,6 +15,8 @@ type Listener = () => void;
 class MixerConnection {
     private mixer: XAirMixer | undefined;
     private stripsApi: XAirStrips | undefined;
+    private sendsApi: XAirSends | undefined;
+    private scenesApi: XAirScenes | undefined;
     private host: string | undefined;
     private readonly listeners = new Set<Listener>();
     private notifyTimer: ReturnType<typeof setTimeout> | undefined;
@@ -48,6 +50,14 @@ class MixerConnection {
         return this.stripsApi;
     }
 
+    get sends(): XAirSends | undefined {
+        return this.sendsApi;
+    }
+
+    get scenes(): XAirScenes | undefined {
+        return this.scenesApi;
+    }
+
     strip(ref: StripRef): Strip | undefined {
         return this.stripsApi?.strip(ref);
     }
@@ -64,11 +74,13 @@ class MixerConnection {
         const mixer = new XAirMixer({ host: name || host, port: port ? Number(port) : undefined });
         this.mixer = mixer;
         this.stripsApi = new XAirStrips(mixer);
+        this.sendsApi = new XAirSends(mixer);
+        this.scenesApi = new XAirScenes(mixer);
         mixer.on("online", (online) => {
             if (this.mixer !== mixer) return;
             this.setState(online ? "online" : "offline");
             // Back online: read everything again (names or faders may have changed meanwhile)
-            if (online) void mixer.sync(this.stripsApi!.addresses());
+            if (online) void mixer.sync([...this.stripsApi!.addresses(), ...this.sendsApi!.addresses(), ...this.scenesApi!.addresses()]);
         });
         mixer.on("change", () => this.notify());
         mixer.on("error", (e) => streamDeck.logger.warn(`[mixer] ${e.message}`));
@@ -87,6 +99,8 @@ class MixerConnection {
         this.mixer?.close();
         this.mixer = undefined;
         this.stripsApi = undefined;
+        this.sendsApi = undefined;
+        this.scenesApi = undefined;
     }
 
     private setState(state: ConnectionState): void {

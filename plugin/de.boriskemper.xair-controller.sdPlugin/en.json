@@ -14,7 +14,8 @@
 			"offline": "Mixer offline",
 			"offline_hint": "Not answering, retrying",
 			"choose": "Choose a channel",
-			"choose_hint": "In the settings of this dial"
+			"choose_hint": "In the settings of this dial",
+			"no_members": "no channels"
 		},
 		"pi": {
 			"mixer": "Mixer",
@@ -48,9 +49,34 @@
 			"look_meter": "Meter",
 			"thin_meter": "Thin meter",
 			"thin_meter_hint": "A small level bar along the bottom of the key",
-			"show_db": "Show fader in dB"
+			"show_db": "Show fader in dB",
+			"send_help": "Rotate: send level · Push: send off/on · Tap: 0 dB (hold: -∞)",
+			"send_target": "Send to",
+			"choose_target": "Choose a bus or FX",
+			"send_style_hint": "The meter is the channel's; the marker is the send level.",
+			"mute_group_help": "Press: switch the mute group",
+			"mute_group": "Mute group",
+			"mute_group_title": "Title",
+			"mute_group_title_placeholder": "e.g. Band",
+			"mute_group_title_hint": "Shown instead of \"MG n\" (the mixer has no names for mute groups)",
+			"snapshot_help": "Loads a snapshot: the whole mix changes",
+			"snapshot": "Snapshot",
+			"choose_snapshot": "Choose a snapshot",
+			"snapshot_mode": "Loading",
+			"mode_arm": "Press twice",
+			"mode_immediate": "Immediately",
+			"mode_hold": "Hold",
+			"snapshot_mode_hint": "Press twice: the first press arms the key (it pulses yellow for 2 s), the second loads."
 		},
 		"Channel": "Channel",
-		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "A mixer channel on a key: mute, like its scribble strip, or with its meter."
+		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "A mixer channel on a key: mute, like its scribble strip, or with its meter.",
+		"Send": "Send",
+		"A channel's send to a bus or FX on a dial.": "A channel's send to a bus or FX on a dial.",
+		"Send level": "Send level",
+		"Send on/off": "Send on/off",
+		"Mute Group": "Mute Group",
+		"Switch a mute group; shows its channels.": "Switch a mute group; shows its channels.",
+		"Snapshot": "Snapshot",
+		"Load a snapshot of the mixer.": "Load a snapshot of the mixer."
 	}
 }

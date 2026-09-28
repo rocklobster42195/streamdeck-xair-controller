@@ -28,3 +28,8 @@ export function textOn(hex: string): string {
     const l = 0.2126 * lin((n >> 16) & 255) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
     return l > 0.4 ? "#000000" : "#FFFFFF";
 }
+
+/** On the black dial strip "off" reads as a plain light grey. */
+export function dialColor(color: StripColor): string {
+    return color.name === "off" ? "#d0d0d4" : scribbleColor(color);
+}

@@ -65,6 +65,59 @@
                     "Image": "imgs/actions/channel-key/key"
                 }
             ]
+        },
+        {
+            "Name": "Send",
+            "UUID": "de.boriskemper.xair-controller.send-dial",
+            "Icon": "imgs/actions/send-dial/icon",
+            "Tooltip": "A channel's send to a bus or FX on a dial.",
+            "PropertyInspectorPath": "ui/send-dial.html",
+            "Controllers": [
+                "Encoder"
+            ],
+            "Encoder": {
+                "layout": "layouts/canvas.json",
+                "TriggerDescription": {
+                    "Rotate": "Send level",
+                    "Push": "Send on/off",
+                    "Touch": "0 dB (hold: -∞)"
+                }
+            },
+            "States": [
+                {
+                    "Image": "imgs/actions/send-dial/key"
+                }
+            ]
+        },
+        {
+            "Name": "Mute Group",
+            "UUID": "de.boriskemper.xair-controller.mute-group-key",
+            "Icon": "imgs/actions/mute-group-key/icon",
+            "Tooltip": "Switch a mute group; shows its channels.",
+            "PropertyInspectorPath": "ui/mute-group-key.html",
+            "Controllers": [
+                "Keypad"
+            ],
+            "States": [
+                {
+                    "Image": "imgs/actions/mute-group-key/key"
+                }
+            ]
+        },
+        {
+            "Name": "Snapshot",
+            "UUID": "de.boriskemper.xair-controller.snapshot-key",
+            "Icon": "imgs/actions/snapshot-key/icon",
+            "Tooltip": "Load a snapshot of the mixer.",
+            "PropertyInspectorPath": "ui/snapshot-key.html",
+            "Controllers": [
+                "Keypad"
+            ],
+            "States": [
+                {
+                    "Image": "imgs/actions/snapshot-key/key"
+                }
+            ]
         }
     ]
 }

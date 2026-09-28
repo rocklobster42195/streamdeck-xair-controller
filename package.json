@@ -17,7 +17,8 @@
         "check": "npm run build && npm test && npm run lint && npm run validate -w xac-plugin",
         "sim:meters": "node tools/sd-sim/meters.mjs sim-out",
         "pi:preview": "node tools/pi-preview.mjs",
-        "sim:keys": "node tools/sd-sim/keys.mjs sim-out"
+        "sim:keys": "node tools/sd-sim/keys.mjs sim-out",
+        "sim:scenes": "node tools/sd-sim/scenes.mjs sim-out"
     },
     "devDependencies": {
         "@tsconfig/node24": "^24.0.5",

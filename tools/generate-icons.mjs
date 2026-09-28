@@ -13,6 +13,9 @@ const root = "plugin/de.boriskemper.xair-controller.sdPlugin/imgs";
 const actions = {
     "fader-dial": mdi.mdiTuneVertical,
     "channel-key": mdi.mdiVolumeHigh,
+    "send-dial": mdi.mdiCallSplit,
+    "mute-group-key": mdi.mdiVolumeMute,
+    "snapshot-key": mdi.mdiCameraOutline,
 };
 
 const listIcon = (d) => `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ffffff" d="${d}"/></svg>`;

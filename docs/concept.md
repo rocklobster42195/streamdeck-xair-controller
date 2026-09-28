@@ -79,7 +79,7 @@ The meter and the fader position share **one dB scale**, like on a console. Ther
 
 ### Send dial
 
-Each dial is set to one channel → target (bus 1–6 or FX 1–4, depending on the model). The display works like the Fader's, headed "Vocals → Bus 2" or "→ Reverb" with the mixer's names. The meter shows the channel level and the marker shows the send level. Rotate and touch work as on the Fader; push switches the send on or off. The send's pre/post tap is shown but not switched.
+Each dial is set to one channel → target (bus 1–6 or FX 1–4, depending on the model). The display works like the Fader's, headed "Vocals → Bus 2" or "→ Reverb" with the mixer's names. The meter shows the channel level and the marker shows the send level. Rotate and touch work as on the Fader; push switches the send on or off. The send's pre/post tap is shown but not switched. **Built 2026-09-28:** X-Air has no on/off switch per send (only level, tap and grpon), so "off" sets the level to -∞ and "on" restores the level from before (kept in the dial's settings).
 
 ### Meter
 

@@ -14,7 +14,8 @@
 			"offline": "Mischpult offline",
 			"offline_hint": "Antwortet nicht, neuer Versuch läuft",
 			"choose": "Kanal wählen",
-			"choose_hint": "In den Einstellungen dieses Reglers"
+			"choose_hint": "In den Einstellungen dieses Reglers",
+			"no_members": "keine Kanäle"
 		},
 		"pi": {
 			"mixer": "Mischpult",
@@ -48,9 +49,34 @@
 			"look_meter": "Aussteuerung",
 			"thin_meter": "Dünne Aussteuerung",
 			"thin_meter_hint": "Ein schmaler Pegelbalken am unteren Rand der Taste",
-			"show_db": "Fader in dB zeigen"
+			"show_db": "Fader in dB zeigen",
+			"send_help": "Drehen: Send-Pegel · Drücken: Send aus/an · Tippen: 0 dB (halten: -∞)",
+			"send_target": "Send auf",
+			"choose_target": "Bus oder FX wählen",
+			"send_style_hint": "Die Aussteuerung ist die des Kanals; der Pfeil zeigt den Send-Pegel.",
+			"mute_group_help": "Drücken: Mute-Gruppe schalten",
+			"mute_group": "Mute-Gruppe",
+			"mute_group_title": "Titel",
+			"mute_group_title_placeholder": "z. B. Band",
+			"mute_group_title_hint": "Statt „MG n“ (das Mischpult kennt keine Namen für Mute-Gruppen)",
+			"snapshot_help": "Lädt einen Snapshot: der ganze Mix ändert sich",
+			"snapshot": "Snapshot",
+			"choose_snapshot": "Snapshot wählen",
+			"snapshot_mode": "Laden",
+			"mode_arm": "Zweimal drücken",
+			"mode_immediate": "Sofort",
+			"mode_hold": "Halten",
+			"snapshot_mode_hint": "Zweimal drücken: Der erste Druck macht die Taste scharf (sie pulsiert 2 s gelb), der zweite lädt."
 		},
 		"Channel": "Kanal",
-		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "Ein Mischpult-Kanal auf einer Taste: stumm schalten, wie sein Scribble-Strip oder mit Aussteuerung."
+		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "Ein Mischpult-Kanal auf einer Taste: stumm schalten, wie sein Scribble-Strip oder mit Aussteuerung.",
+		"Send": "Send",
+		"A channel's send to a bus or FX on a dial.": "Der Send eines Kanals auf einen Bus oder ein FX am Drehregler.",
+		"Send level": "Send-Pegel",
+		"Send on/off": "Send an/aus",
+		"Mute Group": "Mute-Gruppe",
+		"Switch a mute group; shows its channels.": "Schaltet eine Mute-Gruppe und zeigt ihre Kanäle.",
+		"Snapshot": "Snapshot",
+		"Load a snapshot of the mixer.": "Lädt einen Snapshot des Mischpults."
 	}
 }

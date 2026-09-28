@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Snapshot</title>
+  <link rel="stylesheet" href="pi-theme.css" />
+  <link rel="stylesheet" href="xac.css" />
+  <script src="locales.generated.js"></script>
+  <script src="pi.js"></script>
+</head>
+
+<body hidden>
+  <div class="pi-hint xac-help" data-i18n="pi.snapshot_help"></div>
+
+  <pi-section title="pi.snapshot" class="pi-needs-connection">
+    <pi-select setting="snapshot" source="snapshots" label-setting="snapshotLabel" placeholder="pi.choose_snapshot" empty="pi.no_strips"></pi-select>
+  </pi-section>
+
+  <pi-section title="pi.snapshot_mode">
+    <pi-choice setting="mode" default="arm" columns="3" data-options='[
+      {"value":"arm","label":"pi.mode_arm"},{"value":"immediate","label":"pi.mode_immediate"},{"value":"hold","label":"pi.mode_hold"}
+    ]'></pi-choice>
+    <div class="pi-hint pi-padded" data-i18n="pi.snapshot_mode_hint"></div>
+  </pi-section>
+
+  <xac-connection-card></xac-connection-card>
+
+  <div class="pi-footer"><span data-plugin-version>XR-C</span></div>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mute Group</title>
+  <link rel="stylesheet" href="pi-theme.css" />
+  <link rel="stylesheet" href="xac.css" />
+  <script src="locales.generated.js"></script>
+  <script src="pi.js"></script>
+</head>
+
+<body hidden>
+  <div class="pi-hint xac-help" data-i18n="pi.mute_group_help"></div>
+
+  <pi-section title="pi.mute_group">
+    <pi-choice setting="group" default="1" columns="4" data-options='[
+      {"value":"1","label":"MG 1"},{"value":"2","label":"MG 2"},{"value":"3","label":"MG 3"},{"value":"4","label":"MG 4"}
+    ]'></pi-choice>
+    <pi-field setting="title" label="pi.mute_group_title" placeholder="pi.mute_group_title_placeholder" hint="pi.mute_group_title_hint"></pi-field>
+  </pi-section>
+
+  <xac-connection-card></xac-connection-card>
+
+  <div class="pi-footer"><span data-plugin-version>XR-C</span></div>
+</body>
+
+</html>
