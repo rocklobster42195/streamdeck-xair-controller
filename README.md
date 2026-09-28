@@ -20,7 +20,6 @@ XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** ont
 - [Getting started](#getting-started)
 - [Actions](#actions)
 - [Meters and display styles](#meters-and-display-styles)
-- [Colours](#colours)
 - [A short mixer primer](#a-short-mixer-primer)
 - [How XR-C talks to the mixer](#how-xr-c-talks-to-the-mixer)
 - [Troubleshooting](#troubleshooting)
@@ -155,23 +154,6 @@ Dials offer four styles:
 - The bar rises at once and falls back smoothly, like a hardware meter.
 
 **Reading the VU meter:** a VU meter shows the *average* loudness, not the peaks. Its needle takes about 300 ms to settle, which is what makes it calm and pleasant to watch. XR-C calibrates **0 VU to -18 dBFS**, the usual studio reference: music that sits around 0 VU is at a good level.
-
-## Colours
-
-The mixer knows eight scribble strip colours, plus each one "inverted". XR-C shows them in its house palette:
-
-| Mixer colour | On the key | Hex |
-|---|---|---|
-| Red | Düsseldorf Red | `#E30018` |
-| Green | Vida Loca | `#59A028` |
-| Yellow | School Bus Yellow | `#FFDD00` |
-| Blue | Düsseldorf Blue | `#009FDF` |
-| Magenta | Cerise | `#E14190` |
-| Cyan | Persian Green | `#00ACA8` |
-| White | White | `#FFFFFF` |
-| Off | Grey, dimmed | `#A5A5A5` |
-
-The text on a key is black or white, whichever reads better. **Inverted** colours keep the key dark and draw the frame and name in the colour, as on the mixer's display.
 
 ## A short mixer primer
 
