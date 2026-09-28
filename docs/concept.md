@@ -71,6 +71,18 @@ Each dial is set to one channel → target (bus 1–6 or FX 1–4, depending on 
 - Pre- or post-fader, post by default.
 - Also available as a thin bar on the Mute key, optional.
 - Performance: at most ~15 fps for all keys together, through the shared frame ticker. Nothing is redrawn while the signal is static. `/meters` is subscribed only while a meter is visible.
+- **Styles, chosen 2026-09-28** from the mockups `C:\dev\mac\sim-out\previews\xac-meter-proposals.png`:
+  - **Dial, "Digital" (D1, default):**
+    - segmented bars lying flat, with green, yellow and red zones;
+    - peak hold as a line;
+    - a dB scale with the fader as a Persian Green marker;
+    - name and fader dB at the top.
+  - **Dial, "Classic" (D3, a gimmick, optional):** two analog VU meters L/R with a cream face, black needle and red zone above 0 VU (0 VU = −18 dBFS, maybe adjustable), and VU ballistics (~300 ms). This is the one exception to "no needle gauges" (grill Q17), and only on the dial.
+  - **Key (K1):** vertical LED bars L/R, the fader as a marker, name at the top and dB at the bottom.
+  - **Ruled out:** the mini VU on a key (K3, the user: "zu klein").
+  - **Not decided:** "key fills up" (K2), mute key with a level ring (K4), big number (K5).
+- **Mono must be thought of everywhere (user):** one bar instead of two. The digital dial uses a single, taller bar, the classic dial a single centered VU meter, and the key a single wider bar. Stereo means a linked pair or a stereo source (LR, buses with buslink, FX returns).
+- **Ballistics (digital):** fast attack, release about 20 dB/s, peak hold 1.5 s.
 
 ### Key looks
 
