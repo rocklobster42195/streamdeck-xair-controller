@@ -1,0 +1,45 @@
+{
+	"Description": "Faders, mutes and meters of Behringer X-Air mixers on your Stream Deck.",
+	"Name": "X-Air Controller",
+	"Category": "X-Air Controller",
+	"Localization": {
+		"Fader": "Fader",
+		"A mixer channel on a dial: level, mute and its meter.": "A mixer channel on a dial: level, mute and its meter.",
+		"Level": "Level",
+		"Mute": "Mute",
+		"0 dB (hold: -∞)": "0 dB (hold: -∞)",
+		"key": {
+			"setup": "Set up mixer",
+			"setup_hint": "Enter its address in the settings",
+			"offline": "Mixer offline",
+			"offline_hint": "Not answering, retrying",
+			"choose": "Choose a channel",
+			"choose_hint": "In the settings of this dial"
+		},
+		"pi": {
+			"mixer": "Mixer",
+			"mixer_address": "Mixer address",
+			"mixer_address_placeholder": "e.g. 192.168.1.50",
+			"mixer_address_hint": "The IP address of your X-Air mixer, or search for it below.",
+			"search_mixers": "Search",
+			"connect": "Connect",
+			"searching": "Searching the network…",
+			"no_mixer_found": "No mixer answered. Is it on the same network? Over a VPN, enter its address instead.",
+			"state_online": "Connected",
+			"state_offline": "Mixer not answering",
+			"state_connecting": "Connecting…",
+			"state_unconfigured": "Not set up",
+			"done": "Done",
+			"change": "Change",
+			"fader_help": "Rotate: level · Push: mute · Tap: 0 dB (hold: -∞)",
+			"strip": "Channel",
+			"choose_strip": "Choose a channel",
+			"no_strips": "No channels (mixer not connected).",
+			"meter_style": "Meter",
+			"style_digital": "Digital",
+			"style_classic": "Classic",
+			"dial_controls": "Dial",
+			"dial_step": "Step per tick"
+		}
+	}
+}

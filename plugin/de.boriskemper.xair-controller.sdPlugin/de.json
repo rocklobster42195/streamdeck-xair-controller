@@ -1,0 +1,45 @@
+{
+	"Description": "Fader, Mutes und Pegel von Behringer-X-Air-Mischpulten auf deinem Stream Deck.",
+	"Name": "X-Air Controller",
+	"Category": "X-Air Controller",
+	"Localization": {
+		"Fader": "Fader",
+		"A mixer channel on a dial: level, mute and its meter.": "Ein Mischpult-Kanal am Drehregler: Pegel, Stumm und Aussteuerung.",
+		"Level": "Pegel",
+		"Mute": "Stumm",
+		"0 dB (hold: -∞)": "0 dB (halten: -∞)",
+		"key": {
+			"setup": "Mischpult einrichten",
+			"setup_hint": "Adresse in den Einstellungen eintragen",
+			"offline": "Mischpult offline",
+			"offline_hint": "Antwortet nicht, neuer Versuch läuft",
+			"choose": "Kanal wählen",
+			"choose_hint": "In den Einstellungen dieses Reglers"
+		},
+		"pi": {
+			"mixer": "Mischpult",
+			"mixer_address": "Adresse des Mischpults",
+			"mixer_address_placeholder": "z. B. 192.168.1.50",
+			"mixer_address_hint": "Die IP-Adresse deines X-Air-Mischpults, oder unten danach suchen.",
+			"search_mixers": "Suchen",
+			"connect": "Verbinden",
+			"searching": "Suche im Netzwerk…",
+			"no_mixer_found": "Kein Mischpult hat geantwortet. Ist es im selben Netz? Über VPN bitte die Adresse eintragen.",
+			"state_online": "Verbunden",
+			"state_offline": "Mischpult antwortet nicht",
+			"state_connecting": "Verbinde…",
+			"state_unconfigured": "Nicht eingerichtet",
+			"done": "Fertig",
+			"change": "Ändern",
+			"fader_help": "Drehen: Pegel · Drücken: stumm · Tippen: 0 dB (halten: -∞)",
+			"strip": "Kanal",
+			"choose_strip": "Kanal wählen",
+			"no_strips": "Keine Kanäle (Mischpult nicht verbunden).",
+			"meter_style": "Aussteuerung",
+			"style_digital": "Digital",
+			"style_classic": "Klassisch",
+			"dial_controls": "Drehregler",
+			"dial_step": "Schritt pro Raste"
+		}
+	}
+}

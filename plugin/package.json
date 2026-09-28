@@ -1,0 +1,34 @@
+{
+    "name": "xac-plugin",
+    "version": "0.1.0",
+    "private": true,
+    "description": "XR-C — X-Air Controller: the Stream Deck plugin",
+    "license": "MIT",
+    "author": "Boris Kemper",
+    "type": "module",
+    "scripts": {
+        "build": "rollup -c",
+        "watch": "rollup -c -w --watch.onEnd=\"streamdeck restart de.boriskemper.xair-controller\"",
+        "link": "streamdeck link de.boriskemper.xair-controller.sdPlugin",
+        "validate": "streamdeck validate de.boriskemper.xair-controller.sdPlugin",
+        "pack": "streamdeck pack de.boriskemper.xair-controller.sdPlugin --force"
+    },
+    "dependencies": {
+        "@elgato/streamdeck": "^2.1.0",
+        "@mdi/js": "^7.4.47",
+        "@rocklobster42195/streamdeck-kit": "file:../../streamdeck-kit/packages/kit",
+        "xair-client": "file:../../xair-client"
+    },
+    "devDependencies": {
+        "@elgato/cli": "^1.7.4",
+        "@rollup/plugin-commonjs": "^29.0.3",
+        "@rollup/plugin-json": "6.1.0",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "@rollup/plugin-terser": "^1.0.0",
+        "@rollup/plugin-typescript": "^12.1.0",
+        "rollup": "^4.62.2",
+        "sharp": "^0.35.4",
+        "tslib": "^2.6.2",
+        "@tsconfig/node24": "^24.0.5"
+    }
+}

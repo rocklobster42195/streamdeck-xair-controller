@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+    "Name": "X-Air Controller",
+    "Version": "0.1.0.0",
+    "Author": "Boris Kemper",
+    "Category": "X-Air Controller",
+    "CategoryIcon": "imgs/plugin/category-icon",
+    "CodePath": "bin/plugin.js",
+    "Description": "Faders, mutes and meters of Behringer X-Air mixers (XR12, XR16, XR18) and the Midas MR18 on your Stream Deck.\nUnofficial community plugin, not affiliated with Behringer, Midas, Music Tribe or Elgato.\n\nIcons by https://pictogrammers.com",
+    "Icon": "imgs/plugin/marketplace",
+    "SDKVersion": 3,
+    "Software": {
+        "MinimumVersion": "7.1"
+    },
+    "OS": [
+        {
+            "Platform": "mac",
+            "MinimumVersion": "12"
+        },
+        {
+            "Platform": "windows",
+            "MinimumVersion": "10"
+        }
+    ],
+    "Nodejs": {
+        "Version": "24",
+        "Debug": "enabled"
+    },
+    "UUID": "de.boriskemper.xair-controller",
+    "Actions": [
+        {
+            "Name": "Fader",
+            "UUID": "de.boriskemper.xair-controller.fader-dial",
+            "Icon": "imgs/actions/fader-dial/icon",
+            "Tooltip": "A mixer channel on a dial: level, mute and its meter.",
+            "PropertyInspectorPath": "ui/fader-dial.html",
+            "Controllers": ["Encoder"],
+            "Encoder": {
+                "layout": "layouts/canvas.json",
+                "TriggerDescription": {
+                    "Rotate": "Level",
+                    "Push": "Mute",
+                    "Touch": "0 dB (hold: -∞)"
+                }
+            },
+            "States": [{ "Image": "imgs/actions/fader-dial/key" }]
+        }
+    ]
+}

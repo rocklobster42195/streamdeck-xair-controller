@@ -1,0 +1,7 @@
+/* XR-C additions to the kit's pi-theme.css */
+:root { --pi-accent: #00ACA8; --pi-accent-strong: #008a87; }
+.xac-help { padding: 8px 12px 0; }
+.xac-conn-head { display: flex; align-items: center; gap: 10px; }
+.xac-conn-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.xac-found { display: flex; flex-direction: column; gap: 2px; padding: 0 8px 8px; }
+body[data-connection="down"] .pi-needs-connection { opacity: 0.5; pointer-events: none; }
