@@ -86,8 +86,14 @@ await scene("xr-c", living, [4, 5], (sim) => {
         const t = Date.now() - start;
         // Someone rides the Guest fader up, then mutes the TV and unmutes it
         if (t > 1500 && t < 3500) emu.change("/ch/08/mix/fader", [0.2 + ((t - 1500) / 2000) * 0.55]);
-        if (step === 0 && t > 3800) (step = 1), sim.press(ctx.tv);
-        if (step === 1 && t > 5600) (step = 2), sim.press(ctx.tv);
+        if (step === 0 && t > 3800) {
+            step = 1;
+            sim.press(ctx.tv);
+        }
+        if (step === 1 && t > 5600) {
+            step = 2;
+            sim.press(ctx.tv);
+        }
         const file = await sim.snapshot(TMP, `gif-${String(frames.length).padStart(3, "0")}`);
         frames.push({ png: await framed(fs.readFileSync(file)), at: Date.now() - start });
     }
