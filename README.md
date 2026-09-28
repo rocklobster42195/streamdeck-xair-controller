@@ -10,6 +10,7 @@ This is an unofficial community plugin. It is not affiliated with or endorsed by
 
 | Action | What it does | Where |
 |---|---|---|
+| **Channel** | A channel on a key. Press to mute, hold to reset peak and clip. It looks like the console's scribble strip: the channel colour, the name and the fader in dB. Muted, it turns red with a crossed speaker; muted through a mute group or DCA, it gets a red frame. Optionally it shows a thin meter at the bottom, or the full meter as LED bars (mono or stereo) with a clip indicator. | Key |
 | **Fader** | A channel on a dial. Rotate to set the level (step per tick adjustable), push to mute, tap for 0 dB, hold for -∞. The display shows the channel's name and scribble colour and the fader in dB. With **Digital** (LED bars) or **Classic** (analog VU meters) it also shows the live meter; stereo channels and linked pairs get two. **Ring** and **Pie** show only the fader. | Dial (SD+) |
 
 ## Setup
@@ -32,6 +33,7 @@ npm install
 npm run build          # plugin and settings panel
 npm run check          # build, tests, lint, manifest validation
 npm run sim:meters     # Fader dials against the xair-client emulator → sim-out/meters/
+npm run sim:keys       # Channel keys in every look and mute state → sim-out/keys/
 npm run pi:preview     # settings panel in a browser with invented data → http://localhost:5299/fader-dial.html
 npm run icons          # regenerate icons
 ```

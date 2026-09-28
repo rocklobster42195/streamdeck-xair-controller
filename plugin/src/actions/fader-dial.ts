@@ -10,11 +10,13 @@ import streamDeck, {
     type WillDisappearEvent,
 } from "@elgato/streamdeck";
 import type { JsonObject } from "@elgato/utils";
-import { frames, MeterBallistics, VuBallistics, dbfsToVu } from "@rocklobster42195/streamdeck-kit";
-import { meterIndices, parseStripId, type StripRef } from "xair-client";
+import { frames } from "@rocklobster42195/streamdeck-kit";
+import { parseStripId } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
+import { MeterFeed } from "../mixer/meter-feed";
 import { scribbleColor } from "../render/colors";
 import { renderFaderMessage, renderFaderStrip, showsMeter, type FaderStyle } from "../render/fader-strip";
+import { stripName } from "../render/strip-name";
 
 type FaderSettings = {
     /** The strip, e.g. "ch:3" (see xair-client stripId). */
@@ -24,25 +26,14 @@ type FaderSettings = {
     step?: number;
 } & JsonObject;
 
-type Instance = {
-    action: DialAction<FaderSettings>;
-    settings: FaderSettings;
-    /** Latest measured levels (dBFS) per channel of the strip. */
-    measured: number[];
-    meters: MeterBallistics[];
-    needles: VuBallistics[];
-    unsubscribe?: () => void;
-    /** The mixer the meter subscription belongs to (a reconnect creates a new one). */
-    subscribedTo?: unknown;
-    lastImage?: string;
-};
+type Instance = { action: DialAction<FaderSettings>; settings: FaderSettings; feed: MeterFeed; lastImage?: string };
 
 /** Lowest level a rotation starts from when the fader is at -∞ (turning up from silence). */
 const FLOOR_DB = -60;
 
 /**
  * A mixer strip on a dial. Rotate: level (dB per tick) · Push: mute · Touch: 0 dB (hold: -∞).
- * Shows the strip's meter while visible; the mixer is asked for meters only then.
+ * Digital and Classic show the strip's meter; the mixer is asked for meters only while one shows.
  */
 @action({ UUID: "de.boriskemper.xair-controller.fader-dial" })
 export class FaderDial extends SingletonAction<FaderSettings> {
@@ -51,23 +42,18 @@ export class FaderDial extends SingletonAction<FaderSettings> {
     constructor() {
         super();
         mixerConnection.onChange(() => {
-            for (const id of this.instances.keys()) {
-                this.subscribe(id);
-                this.render(id);
-            }
+            for (const id of this.instances.keys()) this.refresh(id);
         });
     }
 
     override onWillAppear(ev: WillAppearEvent<FaderSettings>): void {
         if (!ev.action.isDial()) return;
-        this.instances.set(ev.action.id, { action: ev.action, settings: ev.payload.settings, measured: [], meters: [], needles: [] });
-        this.subscribe(ev.action.id);
-        this.render(ev.action.id);
+        this.instances.set(ev.action.id, { action: ev.action, settings: ev.payload.settings, feed: new MeterFeed() });
+        this.refresh(ev.action.id);
     }
 
     override onWillDisappear(ev: WillDisappearEvent<FaderSettings>): void {
-        const inst = this.instances.get(ev.action.id);
-        inst?.unsubscribe?.();
+        this.instances.get(ev.action.id)?.feed.stop();
         frames.stop(`fader-${ev.action.id}`);
         this.instances.delete(ev.action.id);
     }
@@ -75,13 +61,8 @@ export class FaderDial extends SingletonAction<FaderSettings> {
     override onDidReceiveSettings(ev: DidReceiveSettingsEvent<FaderSettings>): void {
         const inst = this.instances.get(ev.action.id);
         if (!inst) return;
-        if (inst.settings.strip !== ev.payload.settings.strip || inst.settings.style !== ev.payload.settings.style) {
-            inst.unsubscribe?.();
-            inst.unsubscribe = undefined;
-        }
         inst.settings = ev.payload.settings;
-        this.subscribe(ev.action.id);
-        this.render(ev.action.id);
+        this.refresh(ev.action.id);
     }
 
     override async onDialRotate(ev: DialRotateEvent<FaderSettings>): Promise<void> {
@@ -114,30 +95,20 @@ export class FaderDial extends SingletonAction<FaderSettings> {
         return { ref, strips, settings: inst.settings };
     }
 
-    /** Meters while the dial is visible, the mixer online and a strip with a meter chosen. */
-    private subscribe(id: string): void {
+    /** Settings, strip or connection changed: (un)subscribe the meter and redraw. */
+    private refresh(id: string): void {
         const inst = this.instances.get(id);
         if (!inst) return;
-        const mixer = mixerConnection.current;
-        const ref = parseStripId(inst.settings.strip);
-        // Ring and pie show no meter; DCAs have none
-        const wanted = !!mixer && !!ref && mixerConnection.state === "online" && meterIndices(ref).length > 0 && showsMeter(inst.settings.style ?? "digital");
-        if (inst.unsubscribe && wanted && inst.subscribedTo === mixer) return;
-        inst.unsubscribe?.();
-        inst.unsubscribe = undefined;
-        inst.measured = [];
-        if (!wanted || !mixer || !ref) return;
-        inst.subscribedTo = mixer;
-        inst.unsubscribe = mixer.subscribeMeters(1, (bank) => {
-            const indices = meterIndices(ref, isStereo(ref));
-            inst.measured = indices.map((i) => bank[i] ?? -128);
-        });
-        // Redraw at the shared frame rate while subscribed
-        frames.run(`fader-${id}`, () => {
-            if (this.instances.get(id) !== inst || !inst.unsubscribe) return false;
-            this.render(id);
-            return true;
-        });
+        inst.feed.update(parseStripId(inst.settings.strip), showsMeter(inst.settings.style ?? "digital"));
+        if (inst.feed.active) {
+            // Redraw at the shared frame rate while the meter moves
+            frames.run(`fader-${id}`, () => {
+                if (this.instances.get(id) !== inst || !inst.feed.active) return false;
+                this.render(id);
+                return true;
+            });
+        }
+        this.render(id);
     }
 
     private render(id: string): void {
@@ -156,33 +127,23 @@ export class FaderDial extends SingletonAction<FaderSettings> {
         const ref = parseStripId(inst.settings.strip);
         const strip = ref && mixerConnection.strip(ref);
         if (!ref || !strip) return renderFaderMessage("choose", t("key.choose"), t("key.choose_hint"));
-
-        const channels = isStereo(ref) ? 2 : 1;
-        const now = Date.now();
-        while (inst.meters.length < channels) inst.meters.push(new MeterBallistics());
-        while (inst.needles.length < channels) inst.needles.push(new VuBallistics());
-        const states = Array.from({ length: channels }, (_, i) => inst.meters[i].update(inst.measured[i] ?? -128, now));
+        const meter = inst.feed.frame(MeterFeed.isStereo(ref) ? 2 : 1);
         return renderFaderStrip({
-            name: strip.name || defaultName(ref),
-            color: scribbleColor(strip.color),
+            name: stripName(ref, strip.name),
+            color: dialColor(strip.color),
             faderDb: strip.db,
             fader: strip.fader,
             muted: strip.muted,
-            levels: states.map((s) => s.level),
-            peaks: states.map((s) => s.peak),
-            vus: Array.from({ length: channels }, (_, i) => inst.needles[i].update(dbfsToVu(inst.measured[i] ?? -128), now)),
+            levels: meter.levels,
+            peaks: meter.peaks,
+            vus: meter.vus,
             style: inst.settings.style ?? "digital",
         });
     }
 }
 
-/** Stereo strips: aux, FX returns, main LR, and linked channel or bus pairs. */
-function isStereo(ref: StripRef): boolean {
-    if (ref.kind === "aux" || ref.kind === "fxrtn" || ref.kind === "lr") return true;
-    return (ref.kind === "ch" || ref.kind === "bus") && !!mixerConnection.strip(ref)?.linked;
+/** On the black strip "off" reads as a plain light grey. */
+function dialColor(color: Parameters<typeof scribbleColor>[0]): string {
+    return color.name === "off" ? "#d0d0d4" : scribbleColor(color);
 }
 
-function defaultName(ref: StripRef): string {
-    const n = String(ref.n);
-    return { ch: `Ch ${n}`, aux: "Aux", fxrtn: `FX ${n}`, bus: `Bus ${n}`, fxsend: `FX Send ${n}`, lr: "Main LR", dca: `DCA ${n}` }[ref.kind];
-}

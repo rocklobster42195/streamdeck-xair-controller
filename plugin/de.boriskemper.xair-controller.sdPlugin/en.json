@@ -42,7 +42,15 @@
 			"display": "Display",
 			"style_ring": "Ring",
 			"style_pie": "Pie",
-			"meter_style_hint": "Digital and Classic show the channel's meter; Ring and Pie show only the fader."
-		}
+			"meter_style_hint": "Digital and Classic show the channel's meter; Ring and Pie show only the fader.",
+			"channel_help": "Press: mute · Hold: reset peak and clip",
+			"look_scribble": "Scribble strip",
+			"look_meter": "Meter",
+			"thin_meter": "Thin meter",
+			"thin_meter_hint": "A small level bar along the bottom of the key",
+			"show_db": "Show fader in dB"
+		},
+		"Channel": "Channel",
+		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "A mixer channel on a key: mute, like its scribble strip, or with its meter."
 	}
 }

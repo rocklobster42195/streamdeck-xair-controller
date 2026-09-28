@@ -42,7 +42,15 @@
 			"display": "Anzeige",
 			"style_ring": "Ring",
 			"style_pie": "Torte",
-			"meter_style_hint": "Digital und Klassisch zeigen die Aussteuerung; Ring und Torte nur den Fader."
-		}
+			"meter_style_hint": "Digital und Klassisch zeigen die Aussteuerung; Ring und Torte nur den Fader.",
+			"channel_help": "Drücken: stumm · Halten: Spitze und Clip zurücksetzen",
+			"look_scribble": "Scribble-Strip",
+			"look_meter": "Aussteuerung",
+			"thin_meter": "Dünne Aussteuerung",
+			"thin_meter_hint": "Ein schmaler Pegelbalken am unteren Rand der Taste",
+			"show_db": "Fader in dB zeigen"
+		},
+		"Channel": "Kanal",
+		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "Ein Mischpult-Kanal auf einer Taste: stumm schalten, wie sein Scribble-Strip oder mit Aussteuerung."
 	}
 }

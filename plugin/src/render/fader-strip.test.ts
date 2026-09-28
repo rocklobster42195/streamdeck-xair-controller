@@ -38,8 +38,9 @@ describe("ring and pie", () => {
 });
 
 describe("scribble colours", () => {
-    it("uses XR-C's colour for 'off' and the same colour for inverted ones", () => {
-        expect(scribbleColor(stripColor(0))).toBe(ACCENT);
+    it("maps the scribble colours onto the house palette (inverted ones alike)", () => {
+        expect(scribbleColor(stripColor(0))).toBe("#A5A5A5");
+        expect(scribbleColor(stripColor(6))).toBe(ACCENT); // cyan is Persian Green
         expect(scribbleColor(stripColor(3))).toBe(scribbleColor(stripColor(11)));
     });
 });

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Channel</title>
+  <link rel="stylesheet" href="pi-theme.css" />
+  <link rel="stylesheet" href="xac.css" />
+  <script src="locales.generated.js"></script>
+  <script src="pi.js"></script>
+</head>
+
+<body hidden>
+  <div class="pi-hint xac-help" data-i18n="pi.channel_help"></div>
+
+  <pi-section title="pi.strip" class="pi-needs-connection">
+    <pi-select setting="strip" source="strips" label-setting="stripLabel" placeholder="pi.choose_strip" empty="pi.no_strips"></pi-select>
+  </pi-section>
+
+  <pi-section title="pi.display">
+    <pi-choice setting="look" default="scribble" columns="2" data-options='[
+      {"value":"scribble","label":"pi.look_scribble","icon":"scribble"},
+      {"value":"meter","label":"pi.look_meter","icon":"digital"}
+    ]'></pi-choice>
+    <pi-toggle setting="thinMeter" label="pi.thin_meter" hint="pi.thin_meter_hint" data-show-when="look=scribble" data-show-default="scribble"></pi-toggle>
+    <pi-toggle setting="showDb" label="pi.show_db" data-default="true"></pi-toggle>
+  </pi-section>
+
+  <xac-connection-card></xac-connection-card>
+
+  <div class="pi-footer"><span data-plugin-version>XR-C</span></div>
+</body>
+
+</html>

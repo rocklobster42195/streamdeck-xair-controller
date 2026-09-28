@@ -76,7 +76,7 @@ http.createServer((req, res) => {
         const lang = u.searchParams.get("lang") ?? "de";
         const settings = JSON.parse(u.searchParams.get("settings") ?? '{"strip":"ch:1","style":"digital"}');
         const info = { application: { language: lang, platform: "windows", version: "7.6" }, plugin: { uuid: UUID, version: "0.1.0" } };
-        const actionInfo = { action: `${UUID}.fader-dial`, context: "ctx", device: "dev", payload: { settings } };
+        const actionInfo = { action: `${UUID}.${path.basename(file, ".html")}`, context: "ctx", device: "dev", payload: { settings } };
         const boot = `<script>window.addEventListener("load",()=>connectElgatoStreamDeckSocket(${WS_PORT},"pi:${scenario}","registerPropertyInspector",${JSON.stringify(JSON.stringify(info))},${JSON.stringify(JSON.stringify(actionInfo))}));</script><style>body{width:360px}</style>`;
         body = Buffer.from(String(body).replace("</body>", `${boot}</body>`));
     }

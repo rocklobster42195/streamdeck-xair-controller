@@ -34,7 +34,9 @@
             "Icon": "imgs/actions/fader-dial/icon",
             "Tooltip": "A mixer channel on a dial: level, mute and its meter.",
             "PropertyInspectorPath": "ui/fader-dial.html",
-            "Controllers": ["Encoder"],
+            "Controllers": [
+                "Encoder"
+            ],
             "Encoder": {
                 "layout": "layouts/canvas.json",
                 "TriggerDescription": {
@@ -43,7 +45,26 @@
                     "Touch": "0 dB (hold: -∞)"
                 }
             },
-            "States": [{ "Image": "imgs/actions/fader-dial/key" }]
+            "States": [
+                {
+                    "Image": "imgs/actions/fader-dial/key"
+                }
+            ]
+        },
+        {
+            "Name": "Channel",
+            "UUID": "de.boriskemper.xair-controller.channel-key",
+            "Icon": "imgs/actions/channel-key/icon",
+            "Tooltip": "A mixer channel on a key: mute, like its scribble strip, or with its meter.",
+            "PropertyInspectorPath": "ui/channel-key.html",
+            "Controllers": [
+                "Keypad"
+            ],
+            "States": [
+                {
+                    "Image": "imgs/actions/channel-key/key"
+                }
+            ]
         }
     ]
 }

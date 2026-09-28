@@ -16,7 +16,8 @@
         "icons": "node tools/generate-icons.mjs",
         "check": "npm run build && npm test && npm run lint && npm run validate -w xac-plugin",
         "sim:meters": "node tools/sd-sim/meters.mjs sim-out",
-        "pi:preview": "node tools/pi-preview.mjs"
+        "pi:preview": "node tools/pi-preview.mjs",
+        "sim:keys": "node tools/sd-sim/keys.mjs sim-out"
     },
     "devDependencies": {
         "@tsconfig/node24": "^24.0.5",
