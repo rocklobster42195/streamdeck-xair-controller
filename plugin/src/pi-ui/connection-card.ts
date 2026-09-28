@@ -16,14 +16,16 @@ export class XacConnectionCard extends HTMLElement {
         this.innerHTML = `
             <div class="pi-section-title">${escapeHtml(t("pi.mixer"))}</div>
             <div class="pi-card">
-                <div class="pi-padded xac-conn-head">
-                    <span class="pi-dot pi-dot-lg"></span>
-                    <div class="pi-select-text"><span class="pi-strong xac-conn-title"></span><span class="pi-hint xac-conn-sub"></span></div>
-                    <button type="button" class="pi-button pi-button-small xac-conn-toggle"></button>
+                <div class="pi-padded">
+                    <div class="xac-conn-head">
+                        <span class="pi-dot pi-dot-lg"></span>
+                        <div class="pi-select-text"><span class="pi-strong xac-conn-title"></span><span class="pi-hint xac-conn-sub"></span></div>
+                        <button type="button" class="pi-button pi-button-small xac-conn-toggle"></button>
+                    </div>
                 </div>
                 <div class="xac-conn-body">
                     <pi-field setting="mixerHost" global label="pi.mixer_address" placeholder="pi.mixer_address_placeholder" hint="pi.mixer_address_hint"></pi-field>
-                    <div class="pi-padded xac-conn-actions">
+                    <div class="xac-conn-actions">
                         <button type="button" class="pi-button xac-search">${escapeHtml(t("pi.search_mixers"))}</button>
                         <button type="button" class="pi-button pi-button-primary xac-connect">${escapeHtml(t("pi.connect"))}</button>
                     </div>

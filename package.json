@@ -15,7 +15,8 @@
         "lint": "eslint plugin/src",
         "icons": "node tools/generate-icons.mjs",
         "check": "npm run build && npm test && npm run lint && npm run validate -w xac-plugin",
-        "sim:meters": "node tools/sd-sim/meters.mjs sim-out"
+        "sim:meters": "node tools/sd-sim/meters.mjs sim-out",
+        "pi:preview": "node tools/pi-preview.mjs"
     },
     "devDependencies": {
         "@tsconfig/node24": "^24.0.5",

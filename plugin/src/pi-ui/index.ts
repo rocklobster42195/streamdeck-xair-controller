@@ -1,10 +1,10 @@
 // Entry of the property inspector bundle (ui/pi.js): the kit's components plus XR-C's connection card.
 import { definePiComponents, initConditionalVisibility, sd, translateDom, type PiChoice, type PiChoiceOption } from "@rocklobster42195/streamdeck-kit/pi";
-import { mdiChartBar, mdiGauge } from "@mdi/js";
+import { mdiChartBar, mdiChartDonut, mdiCircleSlice3, mdiGauge } from "@mdi/js";
 import { XacConnectionCard } from "./connection-card";
 
 /** MDI paths for <pi-choice data-options='[{"icon":"…"}]'> tiles. */
-const CHOICE_ICONS: Record<string, string> = { digital: mdiChartBar, classic: mdiGauge };
+const CHOICE_ICONS: Record<string, string> = { digital: mdiChartBar, classic: mdiGauge, ring: mdiChartDonut, pie: mdiCircleSlice3 };
 
 sd.onReady(() => {
     translateDom();

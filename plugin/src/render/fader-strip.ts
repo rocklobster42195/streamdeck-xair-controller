@@ -1,29 +1,51 @@
-// The Fader dial's touch-strip segment (200×100): "Digital" (LED bars lying, scale, fader marker)
-// or "Classic" (analog VU meters). Mono strips get one bar or meter, stereo strips two.
-import { METER_TICKS, escapeXml, meterBar, meterScaleMarks, mdi, scalePosition, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
+// The Fader dial's touch-strip segment (200×100): "Digital" (LED bars lying, scale, fader marker),
+// "Classic" (analog VU meters), or just the fader as a ring or a pie (no meter). Mono strips get one
+// bar or meter, stereo strips two.
+import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, scalePosition, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
 import { formatDb } from "xair-client";
 import { mdiLanDisconnect, mdiTuneVertical, mdiVolumeOff } from "@mdi/js";
 
-export type MeterStyle = "digital" | "classic";
+export type FaderStyle = "digital" | "classic" | "ring" | "pie";
+
+/** Styles that show a meter (and need the mixer's meter data). */
+export function showsMeter(style: FaderStyle): boolean {
+    return style === "digital" || style === "classic";
+}
 
 export type FaderView = {
     name: string;
     /** Scribble strip colour (CSS). */
     color: string;
     faderDb: number;
+    /** Fader position 0..1 (what the physical fader shows). */
+    fader: number;
     muted: boolean;
     /** Levels and peaks in dBFS, one per channel (mono: 1, stereo: 2). */
     levels: number[];
     peaks: number[];
     /** Needle positions in VU (classic style), one per channel. */
     vus: number[];
-    style: MeterStyle;
+    style: FaderStyle;
 };
 
 const MUTED = "#ff5a5a";
 
 export function renderFaderStrip(v: FaderView): string {
-    return v.style === "classic" ? classic(v) : digital(v);
+    if (v.style === "classic") return classic(v);
+    if (v.style === "ring" || v.style === "pie") return gauge(v);
+    return digital(v);
+}
+
+/** Ring or pie with the fader position, name and dB next to it (like MA-C's Volume dial). */
+function gauge(v: FaderView): string {
+    const color = v.muted ? "#5a5a60" : v.color;
+    const parts = v.style === "pie" ? pie(50, 50, 38, v.muted ? 0 : v.fader, color) : arc(50, 50, 34, v.fader, color);
+    if (v.muted) parts.push(mdi(mdiVolumeOff, 34, 34, 32, MUTED));
+    parts.push(
+        text(100, 44, v.name, { size: 14, weight: "bold", maxWidth: 94 }),
+        v.muted ? text(100, 64, "MUTE", { size: 13, weight: "bold", color: MUTED }) : text(100, 64, formatDb(v.faderDb), { size: 14, weight: "bold", color: v.color, maxWidth: 94 }),
+    );
+    return stripImage(parts);
 }
 
 function digital(v: FaderView): string {

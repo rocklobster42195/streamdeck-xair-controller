@@ -35,11 +35,14 @@
 			"strip": "Channel",
 			"choose_strip": "Choose a channel",
 			"no_strips": "No channels (mixer not connected).",
-			"meter_style": "Meter",
 			"style_digital": "Digital",
 			"style_classic": "Classic",
 			"dial_controls": "Dial",
-			"dial_step": "Step per tick"
+			"dial_step": "Step per tick",
+			"display": "Display",
+			"style_ring": "Ring",
+			"style_pie": "Pie",
+			"meter_style_hint": "Digital and Classic show the channel's meter; Ring and Pie show only the fader."
 		}
 	}
 }

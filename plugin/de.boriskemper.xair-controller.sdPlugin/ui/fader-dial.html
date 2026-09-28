@@ -15,14 +15,17 @@
   <div class="pi-hint xac-help" data-i18n="pi.fader_help"></div>
 
   <pi-section title="pi.strip" class="pi-needs-connection">
-    <pi-select setting="strip" source="strips" placeholder="pi.choose_strip" empty="pi.no_strips"></pi-select>
+    <pi-select setting="strip" source="strips" label-setting="stripLabel" placeholder="pi.choose_strip" empty="pi.no_strips"></pi-select>
   </pi-section>
 
-  <pi-section title="pi.meter_style">
-    <pi-choice setting="style" default="digital" columns="2" data-options='[
+  <pi-section title="pi.display">
+    <pi-choice setting="style" default="digital" columns="4" data-options='[
       {"value":"digital","label":"pi.style_digital","icon":"digital"},
-      {"value":"classic","label":"pi.style_classic","icon":"classic"}
+      {"value":"classic","label":"pi.style_classic","icon":"classic"},
+      {"value":"ring","label":"pi.style_ring","icon":"ring"},
+      {"value":"pie","label":"pi.style_pie","icon":"pie"}
     ]'></pi-choice>
+    <div class="pi-hint pi-padded" data-i18n="pi.meter_style_hint"></div>
   </pi-section>
 
   <pi-section title="pi.dial_controls">

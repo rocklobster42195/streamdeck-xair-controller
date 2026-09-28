@@ -10,7 +10,7 @@ This is an unofficial community plugin. It is not affiliated with or endorsed by
 
 | Action | What it does | Where |
 |---|---|---|
-| **Fader** | A channel on a dial. Rotate to set the level (step per tick adjustable), push to mute, tap for 0 dB, hold for -∞. The display shows the channel's name and scribble colour, the fader in dB and a live meter, as LED bars ("Digital") or analog VU meters ("Classic"). Stereo channels and linked pairs show two meters. | Dial (SD+) |
+| **Fader** | A channel on a dial. Rotate to set the level (step per tick adjustable), push to mute, tap for 0 dB, hold for -∞. The display shows the channel's name and scribble colour and the fader in dB. With **Digital** (LED bars) or **Classic** (analog VU meters) it also shows the live meter; stereo channels and linked pairs get two. **Ring** and **Pie** show only the fader. | Dial (SD+) |
 
 ## Setup
 
@@ -32,6 +32,7 @@ npm install
 npm run build          # plugin and settings panel
 npm run check          # build, tests, lint, manifest validation
 npm run sim:meters     # Fader dials against the xair-client emulator → sim-out/meters/
+npm run pi:preview     # settings panel in a browser with invented data → http://localhost:5299/fader-dial.html
 npm run icons          # regenerate icons
 ```
 

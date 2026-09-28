@@ -4,7 +4,7 @@ import { ACCENT, scribbleColor } from "./colors";
 import { renderFaderStrip, type FaderView } from "./fader-strip";
 
 const svg = (dataUri: string) => Buffer.from(dataUri.split(",")[1], "base64").toString("utf8");
-const view = (over: Partial<FaderView> = {}): FaderView => ({ name: "Vocals", color: "#e25bd8", faderDb: -3.5, muted: false, levels: [-20], peaks: [-9], vus: [-2], style: "digital", ...over });
+const view = (over: Partial<FaderView> = {}): FaderView => ({ name: "Vocals", color: "#e25bd8", faderDb: -3.5, fader: 0.66, muted: false, levels: [-20], peaks: [-9], vus: [-2], style: "digital", ...over });
 
 describe("fader strip", () => {
     it("draws one bar for mono and two for stereo (36 segments each)", () => {
@@ -24,6 +24,16 @@ describe("fader strip", () => {
         const faces = (s: string) => (s.match(/-face"/g) ?? []).length;
         expect(faces(svg(renderFaderStrip(view({ style: "classic" }))))).toBe(1);
         expect(faces(svg(renderFaderStrip(view({ style: "classic", vus: [-2, 0] }))))).toBe(2);
+    });
+});
+
+describe("ring and pie", () => {
+    it("show the fader position without a meter", () => {
+        const ring = svg(renderFaderStrip(view({ style: "ring" })));
+        expect(ring).toContain("stroke-dasharray");
+        expect(ring).not.toContain('width="4.');
+        expect(svg(renderFaderStrip(view({ style: "pie" })))).toContain(" A 30 30 0 1 1 ");
+        expect(svg(renderFaderStrip(view({ style: "pie", muted: true })))).toContain("MUTE");
     });
 });
 

@@ -35,11 +35,14 @@
 			"strip": "Kanal",
 			"choose_strip": "Kanal wählen",
 			"no_strips": "Keine Kanäle (Mischpult nicht verbunden).",
-			"meter_style": "Aussteuerung",
 			"style_digital": "Digital",
 			"style_classic": "Klassisch",
 			"dial_controls": "Drehregler",
-			"dial_step": "Schritt pro Raste"
+			"dial_step": "Schritt pro Raste",
+			"display": "Anzeige",
+			"style_ring": "Ring",
+			"style_pie": "Torte",
+			"meter_style_hint": "Digital und Klassisch zeigen die Aussteuerung; Ring und Torte nur den Fader."
 		}
 	}
 }

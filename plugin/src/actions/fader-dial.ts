@@ -14,12 +14,12 @@ import { frames, MeterBallistics, VuBallistics, dbfsToVu } from "@rocklobster421
 import { meterIndices, parseStripId, type StripRef } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { scribbleColor } from "../render/colors";
-import { renderFaderMessage, renderFaderStrip, type MeterStyle } from "../render/fader-strip";
+import { renderFaderMessage, renderFaderStrip, showsMeter, type FaderStyle } from "../render/fader-strip";
 
 type FaderSettings = {
     /** The strip, e.g. "ch:3" (see xair-client stripId). */
     strip?: string;
-    style?: MeterStyle;
+    style?: FaderStyle;
     /** dB per dial tick. */
     step?: number;
 } & JsonObject;
@@ -75,7 +75,7 @@ export class FaderDial extends SingletonAction<FaderSettings> {
     override onDidReceiveSettings(ev: DidReceiveSettingsEvent<FaderSettings>): void {
         const inst = this.instances.get(ev.action.id);
         if (!inst) return;
-        if (inst.settings.strip !== ev.payload.settings.strip) {
+        if (inst.settings.strip !== ev.payload.settings.strip || inst.settings.style !== ev.payload.settings.style) {
             inst.unsubscribe?.();
             inst.unsubscribe = undefined;
         }
@@ -120,7 +120,8 @@ export class FaderDial extends SingletonAction<FaderSettings> {
         if (!inst) return;
         const mixer = mixerConnection.current;
         const ref = parseStripId(inst.settings.strip);
-        const wanted = !!mixer && !!ref && mixerConnection.state === "online" && meterIndices(ref).length > 0; // DCAs have no meter
+        // Ring and pie show no meter; DCAs have none
+        const wanted = !!mixer && !!ref && mixerConnection.state === "online" && meterIndices(ref).length > 0 && showsMeter(inst.settings.style ?? "digital");
         if (inst.unsubscribe && wanted && inst.subscribedTo === mixer) return;
         inst.unsubscribe?.();
         inst.unsubscribe = undefined;
@@ -165,6 +166,7 @@ export class FaderDial extends SingletonAction<FaderSettings> {
             name: strip.name || defaultName(ref),
             color: scribbleColor(strip.color),
             faderDb: strip.db,
+            fader: strip.fader,
             muted: strip.muted,
             levels: states.map((s) => s.level),
             peaks: states.map((s) => s.peak),

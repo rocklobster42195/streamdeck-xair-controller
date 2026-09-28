@@ -37,12 +37,12 @@ const sim = await startSim({ language: "de", globalSettings: { mixerHost: `127.0
 const dial = (settings, column) => sim.add("fader-dial", settings, { column, controller: "Encoder" });
 
 const sonos = dial({ strip: "ch:3" }, 0);
-const vocals = dial({ strip: "ch:1" }, 1);
-dial({ strip: "ch:3", style: "classic" }, 2);
-dial({ strip: "ch:1", style: "classic" }, 3);
+const vocals = dial({ strip: "ch:1", style: "classic" }, 1);
+dial({ strip: "ch:1", style: "ring" }, 2);
+dial({ strip: "ch:3", style: "pie" }, 3);
 
 await sim.sleep(4000);
-console.log("wrote", await sim.snapshot(out, "01-digital-classic"));
+console.log("wrote", await sim.snapshot(out, "01-styles"));
 
 // Someone moves the Vocals fader on the desk, then mutes it
 emu.change("/ch/01/mix/fader", [0.5]);

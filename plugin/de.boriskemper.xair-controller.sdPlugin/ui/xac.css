@@ -1,7 +1,9 @@
 /* XR-C additions to the kit's pi-theme.css */
 :root { --pi-accent: #00ACA8; --pi-accent-strong: #008a87; }
 .xac-help { padding: 8px 12px 0; }
+xac-connection-card { display: flex; flex-direction: column; gap: 6px; }
 .xac-conn-head { display: flex; align-items: center; gap: 10px; }
-.xac-conn-actions { display: flex; gap: 8px; justify-content: flex-end; }
-.xac-found { display: flex; flex-direction: column; gap: 2px; padding: 0 8px 8px; }
+.xac-conn-body { display: flex; flex-direction: column; gap: 2px; padding: 10px 0 12px; }
+.xac-conn-actions { display: flex; flex-direction: column; gap: 8px; padding: 4px 12px 0; }
+.xac-found { display: flex; flex-direction: column; gap: 2px; padding: 4px 8px 0; }
 body[data-connection="down"] .pi-needs-connection { opacity: 0.5; pointer-events: none; }
