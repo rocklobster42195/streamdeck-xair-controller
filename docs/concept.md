@@ -9,7 +9,7 @@ A Stream Deck plugin for **Behringer X-Air** digital mixers (XR12, XR16, XR18, M
 What sets it apart:
 - **The mixer's own look:** names and colors come live from the scribble strips.
 - **Real meters:** on keys and in the dial display, with peak hold and a clip indicator.
-- **MAC-quality settings:** connection card with discovery, grouped strip picker, live key preview. All of it comes from the shared plugin kit.
+- **MAC-quality settings:** connection card with discovery, grouped strip picker, live key preview. All of it comes from the shared kit.
 
 X32/M32 support may come later; the client is designed so it can be added.
 
@@ -141,7 +141,7 @@ Prior art (used only as a reference for OSC addresses): `mixr-js`, `@mxfriend/li
 
 ## Shared code
 
-XAC is built on the plugin kit `@rocklobster42195/streamdeck-plugin-kit` and the dev kit `@rocklobster42195/streamdeck-dev-kit`; see the MQC concept (`C:\dev\mqtt-controller\docs\concept.md`, "Shared code"). XAC needs these parts of the kit in particular:
+XAC is built on the kit `@rocklobster42195/streamdeck-kit` and the dev kit `@rocklobster42195/streamdeck-dev-kit`; see the MQC concept (`C:\dev\mqtt-controller\docs\concept.md`, "Shared code"). XAC needs these parts of the kit in particular:
 - the gauge family (dB scale, bars, peak hold)
 - `pi-select` with groups and color dots
 - `pi-override`
@@ -166,7 +166,7 @@ As in MAC: English and German UI (one locale file per language), English code co
 
 - **M0, client base** (can start any time; it does not depend on the kit): transport, codec, discovery, `dump` CLI. Then one read-only dump of the XR12, **with the user's OK**, to settle the open OSC questions.
 - **M1, `xair-client` 0.1 on npm:** typed layer, emulator, tests.
-- **M2, plugin v0.1 beta:** starts after the **MAC go-live** and the kit carve-out. Whether XAC or MQC comes first is still open (decided 2026-09-27). Contents: Fader dial with meter, Mute, Meter key, connection card, simulator scenarios.
+- **M2, plugin v0.1 beta:** starts after the **MAC go-live** and the kit carve-out. Whether XAC or MQC comes first is still open (decided 2026-09-27). Contents: Fader dial with meter, Mute, Meter key, connection card, simulator scenarios. Update 2026-09-28: probably XAC first, as a **minimal start** (volume, mute, meter), right after the first kit bus test between SC and MAC; the user is keen to see the meters.
 - **M3, v1.0 for the Marketplace:** Send dial, Mute Group, Snapshot, EN/DE, screenshots, README.
 
 ## Facts from the XR12 dump (2026-09-27, read-only)
