@@ -4,10 +4,11 @@
 //    dark with frame and name in the colour. Muted: red background with a crossed speaker (a red
 //    channel also gets hatching); muted by a mute group or DCA: a red frame instead.
 //  - "meter": vertical LED bars (mono or stereo) with the fader marker, a clip indicator and the dB.
-import { meterBar, mdi, scalePosition, wrap } from "@rocklobster42195/streamdeck-kit";
+import { meterBar, mdi, wrap } from "@rocklobster42195/streamdeck-kit";
 import { formatDb, type MuteReason, type StripColor } from "xair-client";
 import { mdiLanDisconnect, mdiTuneVertical, mdiVolumeOff } from "@mdi/js";
 import { scribbleColor, textOn } from "./colors";
+import { faderBarV } from "./fader-travel";
 
 export type ChannelLook = "scribble" | "meter";
 
@@ -15,6 +16,8 @@ export type ChannelKeyView = {
     name: string;
     color: StripColor;
     faderDb: number;
+    /** Fader travel 0..1 (-∞ … +10 dB). */
+    fader: number;
     muted?: MuteReason;
     look: ChannelLook;
     /** Meter (both looks: the meter look always, the scribble look as a thin bar when given). */
@@ -68,8 +71,8 @@ function meterLook(v: ChannelKeyView): string[] {
         `<text x="${SIZE / 2}" y="22" ${font} font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="middle">${esc(wrap(v.name, SIZE - 16, 17, 1)[0] ?? "")}</text>`,
         ...meterBar({ x: bx, y: top, length: h, thickness: width, levels, peaks: v.peaks, segments: 18, gap: 1.5, orientation: "vertical" }),
     ];
-    const fy = top + h - scalePosition(v.faderDb) * h;
-    parts.push(`<path d="M ${bx + width + 6} ${fy.toFixed(1)} l 10 -6 v 12 Z" fill="${muted ? "#5a5a60" : color}"/>`);
+    // The fader by its travel beside the meter (-∞ at the bottom, +10 dB at the top)
+    parts.push(faderBarV(bx + width + 9, top, h, v.fader, muted ? "#5a5a60" : color));
     if (v.clipped) parts.push(`<rect x="${bx}" y="${top - 5}" width="${width}" height="4" rx="2" fill="${MUTE_RED}"/>`);
     if (muted) {
         parts.push(`<rect x="${bx}" y="${top}" width="${width}" height="${h}" fill="#000" opacity="0.45"/>`);

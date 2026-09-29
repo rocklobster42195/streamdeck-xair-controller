@@ -3,7 +3,7 @@ import { stripColor } from "xair-client";
 import { renderChannelKey, type ChannelKeyView } from "./channel-key";
 
 const svg = (uri: string) => Buffer.from(uri.split(",")[1], "base64").toString("utf8");
-const view = (over: Partial<ChannelKeyView> = {}): ChannelKeyView => ({ name: "Vocals", color: stripColor(5), faderDb: -3.5, look: "scribble", ...over });
+const view = (over: Partial<ChannelKeyView> = {}): ChannelKeyView => ({ name: "Vocals", color: stripColor(5), faderDb: -3.5, fader: 0.75, look: "scribble", ...over });
 
 describe("channel key", () => {
     it("fills with the scribble colour and picks a readable text colour", () => {

@@ -91,7 +91,7 @@ One **send** on a dial: how much of a channel goes to a bus (e.g. a monitor mix)
 | Tap the display | 0 dB |
 | Tap and hold | -∞ |
 
-The meter shows the **channel's** level, and the marker shows the **send** level. The send's tap point (PRE, POST…) is shown in small type; see [pre and post](#buses-and-sends).
+The meter shows the **channel's** level, and the bar underneath shows the **send** level. The send's tap point (PRE, POST…) is shown in small type; see [pre and post](#buses-and-sends).
 
 ### Channel *(key)*
 
@@ -102,7 +102,7 @@ One channel on a key. **Press** to mute; **hold** (0.6 s) to reset the peak hold
   - Muted: the key turns red with a crossed-out speaker. A red channel also gets stripes, so red alone never means "muted".
   - Muted through a mute group or a DCA: a red frame with "MG" or "DCA" instead.
   - Optionally a thin meter along the bottom edge.
-- **Meter** look: LED bars (one for mono, two for stereo) with a peak line, a red clip bar on top and the fader as a marker.
+- **Meter** look: LED bars (one for mono, two for stereo) with a peak line, a red clip bar on top and the fader as a slim bar beside it.
 
 ### Mute Group *(key)*
 
@@ -116,11 +116,13 @@ A snapshot changes the whole mix, so by default the first press only **arms** th
 
 ## Meters and display styles
 
+The fader is always shown by its **travel**, like the physical fader: -∞ at 0 %, 0 dB at 75 % (a small tick), +10 dB at 100 %. The meter next to it shows the level in dBFS.
+
 Dials offer four styles:
 
 | Style | Shows | For |
 |---|---|---|
-| **Digital** | LED bars lying flat, peak hold, a dB scale and the fader as a marker | Everyday use; the most exact reading |
+| **Digital** | LED bars lying flat, peak hold, a dB scale and the fader as a slim bar underneath | Everyday use; the most exact reading |
 | **Classic** | Analog VU meters with a cream face and needle, one per side | The look of an old tape machine |
 | **Ring** | The fader position as a ring | Just the fader, no meter |
 | **Pie** | The fader position as a filled pie | Just the fader, no meter |

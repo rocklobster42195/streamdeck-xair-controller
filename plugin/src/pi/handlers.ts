@@ -3,6 +3,7 @@
 import { piBridge, type PiPushMessage } from "@rocklobster42195/streamdeck-kit/bridge";
 import { discover, sendId, stripId, stripRefs } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
+import { mainFirst } from "../mixer/strip-order";
 import type { ConnectionStatus, PiPush, StripKindLabel } from "./protocol";
 
 export function initPiBridge(): void {
@@ -16,7 +17,7 @@ export function initPiBridge(): void {
         const strips = mixerConnection.strips;
         const mixer = mixerConnection.current;
         if (!strips || !mixer) return [];
-        return stripRefs(mixer.model).map((ref) => {
+        return mainFirst(stripRefs(mixer.model)).map((ref) => {
             const s = strips.strip(ref);
             const kind: StripKindLabel = ref.kind;
             return { value: stripId(ref), label: s.name || defaultLabel(kind, ref.n), sub: `${kindLabel(kind)}${ref.kind === "aux" || ref.kind === "lr" ? "" : ` ${ref.n}`}${s.linked ? " · stereo" : ""}` };

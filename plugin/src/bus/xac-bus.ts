@@ -7,6 +7,7 @@ import { ActionsState, DeckBus } from "@rocklobster42195/streamdeck-kit/bus";
 import { meterIndices, stripId, stripRefs, type StripRef } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { MeterFeed } from "../mixer/meter-feed";
+import { mainFirst } from "../mixer/strip-order";
 import { stripName } from "../render/strip-name";
 
 type Stream = { topic: string; label: string; stereo: boolean; ref: StripRef };
@@ -47,7 +48,7 @@ function update(): void {
 
     streams =
         online && mixer
-            ? stripRefs(mixer.model)
+            ? mainFirst(stripRefs(mixer.model))
                   .filter((ref) => meterIndices(ref).length > 0 && !isRightHalf(ref))
                   .map((ref) => ({ topic: `meters/${stripId(ref)}`, label: stripName(ref, mixerConnection.strip(ref)?.name ?? ""), stereo: MeterFeed.isStereo(ref), ref }))
             : [];

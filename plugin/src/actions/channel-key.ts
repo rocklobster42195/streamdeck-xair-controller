@@ -116,6 +116,7 @@ export class ChannelKey extends SingletonAction<ChannelSettings> {
             name: stripName(ref, strip.name),
             color: strip.color,
             faderDb: strip.db,
+            fader: strip.fader,
             muted: muteReason(mixer, ref),
             look: inst.settings.look ?? "scribble",
             levels: meter?.levels,

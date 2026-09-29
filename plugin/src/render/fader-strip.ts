@@ -1,8 +1,9 @@
 // The Fader dial's touch-strip segment (200×100): "Digital" (LED bars lying, scale, fader marker),
 // "Classic" (analog VU meters), or just the fader as a ring or a pie (no meter). Mono strips get one
 // bar or meter, stereo strips two.
-import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, scalePosition, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
+import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
 import { formatDb } from "xair-client";
+import { faderBarH } from "./fader-travel";
 import { mdiLanDisconnect, mdiTuneVertical, mdiVolumeOff } from "@mdi/js";
 
 export type FaderStyle = "digital" | "classic" | "ring" | "pie";
@@ -57,7 +58,6 @@ function gauge(v: FaderView): string {
 function digital(v: FaderView): string {
     const w = 184;
     const bx = 8;
-    const fm = bx + scalePosition(v.faderDb) * w;
     const marker = v.muted ? "#5a5a60" : v.color;
     // The name gets what the dB label leaves free
     const right = v.muted ? textWidth("MUTE", 12, { bold: true }) + 22 : textWidth(formatDb(v.faderDb), 13, { bold: true });
@@ -66,14 +66,15 @@ function digital(v: FaderView): string {
         v.muted
             ? `${mdi(mdiVolumeOff, 192 - textWidth("MUTE", 12, { bold: true }) - 22, 4, 18, MUTED)}${text(192, 18, "MUTE", { size: 12, weight: "bold", color: MUTED, anchor: "end" })}`
             : text(192, 18, formatDb(v.faderDb), { size: 13, weight: "bold", color: v.color, anchor: "end" }),
-        ...meterBar({ x: bx, y: 32, length: w, thickness: 22, levels: v.levels, peaks: v.peaks, segments: 36, off: v.muted ? "#1a1c20" : undefined }),
-        `<path d="M ${(fm - 5).toFixed(1)} 62 L ${(fm + 5).toFixed(1)} 62 L ${fm.toFixed(1)} 68 Z" fill="${marker}"/>`,
-        ...meterScaleMarks(bx, 71, w, METER_TICKS),
+        ...meterBar({ x: bx, y: 30, length: w, thickness: 22, levels: v.levels, peaks: v.peaks, segments: 36, off: v.muted ? "#1a1c20" : undefined }),
+        ...meterScaleMarks(bx, 57, w, METER_TICKS),
+        // The fader by its travel (-∞ = 0 %, +10 dB = 100 %), not on the meter's dBFS scale
+        faderBarH(bx, 86, w, v.fader, marker),
     ];
     // A send's tap (PRE/POST) small at the bottom right, under the scale
-    if (v.caption && !v.muted) parts.push(text(192, 96, v.caption, { size: 9, color: "#8a8a90", anchor: "end" }));
+    if (v.caption && !v.muted) parts.push(text(192, 81, v.caption, { size: 9, color: "#8a8a90", anchor: "end" }));
     // A muted channel's meter may still move (it can be metered before the mute); dim it
-    if (v.muted) parts.push(`<rect x="${bx}" y="32" width="${w}" height="22" fill="#000" opacity="0.45"/>`);
+    if (v.muted) parts.push(`<rect x="${bx}" y="30" width="${w}" height="22" fill="#000" opacity="0.45"/>`);
     return stripImage(parts);
 }
 
