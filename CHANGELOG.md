@@ -5,6 +5,7 @@ All notable changes to XR-C (X-Air Controller) are documented here.
 ## [Unreleased]
 
 ### Added
+- **deckbus:** XR-C tells other plugins whether the mixer is online and offers the meters of every strip, with the mixer's names; they are sent only while another plugin shows them (e.g. MA-C's Panorama).
 - **Send** dial: a channel's send to a bus or FX (level, off/on, 0 dB), with the channel's meter and the send's tap; the same looks as the Fader.
 - **Mute Group** key: switches mute group 1–4, shows its channels; own title possible.
 - **Snapshot** key: loads a snapshot (press twice by default, or immediately, or hold); shows number and name, frames the current one.

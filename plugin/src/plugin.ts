@@ -5,6 +5,7 @@ import { FaderDial } from "./actions/fader-dial";
 import { MuteGroupKey } from "./actions/mute-group-key";
 import { SendDial } from "./actions/send-dial";
 import { SnapshotKey } from "./actions/snapshot-key";
+import { startXacBus } from "./bus/xac-bus";
 import { mixerConnection, type GlobalSettings } from "./mixer/connection";
 import { initPiBridge } from "./pi/handlers";
 
@@ -24,3 +25,5 @@ streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((ev) => mixerConn
 await streamDeck.connect();
 mixerConnection.configure(await streamDeck.settings.getGlobalSettings<GlobalSettings>());
 streamDeck.logger.info("XR-C started");
+// deckbus: offer the mixer's meters to other plugins (works without it if the bus can't start)
+void startXacBus();

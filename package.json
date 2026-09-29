@@ -19,6 +19,7 @@
         "pi:preview": "node tools/pi-preview.mjs",
         "sim:keys": "node tools/sd-sim/keys.mjs sim-out",
         "sim:scenes": "node tools/sd-sim/scenes.mjs sim-out",
+        "sim:bus": "node tools/sd-sim/bus.mjs",
         "showcase": "node tools/sd-sim/showcase.mjs"
     },
     "devDependencies": {

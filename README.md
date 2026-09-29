@@ -21,6 +21,7 @@ XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** ont
 - [Meters and display styles](#meters-and-display-styles)
 - [A short mixer primer](#a-short-mixer-primer)
 - [How XR-C talks to the mixer](#how-xr-c-talks-to-the-mixer)
+- [Works with other plugins (deckbus)](#works-with-other-plugins-deckbus)
 - [Troubleshooting](#troubleshooting)
 - [Planned](#planned)
 - [Development](#development)
@@ -211,6 +212,20 @@ On large consoles each channel has a small display, the **scribble strip**, with
 - Keys and dials redraw at most about 15 times per second, and only when something changed, to spare the Stream Deck's USB bandwidth.
 - XR-C sends nothing to the internet. Everything stays between your computer and your mixer.
 
+## Works with other plugins (deckbus)
+
+XR-C talks to other Stream Deck plugins on your computer through **deckbus**, a small open bus between plugins. For example, [MA-C (Music Assistant Controller)](https://github.com/rocklobster42195/streamdeck-music-assistant-controller) can let its Panorama move with a channel's level. You don't need to set anything up: when both plugins run, they find each other.
+
+**Offers:**
+- whether the mixer is online, with its model and name;
+- the meters of every channel, bus, FX and the main mix, with the names from your mixer (a linked stereo pair is one stream). They go out only while another plugin actually shows them. Until then, XR-C doesn't even ask the mixer for them.
+
+**Uses:** nothing yet.
+
+**Only with your permission:** nothing yet. Later, other plugins may ask XR-C to lower a channel for a moment (for example during an announcement). That will need your OK per plugin, and XR-C will always put the level back.
+
+deckbus stays on your computer. It uses local pipes (Windows) or sockets (macOS), plugins must know a key stored in your user profile, and nothing goes over the network. The protocol is open: [deckbus protocol](https://github.com/rocklobster42195/streamdeck-kit/blob/main/docs/deckbus-protocol.md).
+
 ## Troubleshooting
 
 **Search finds no mixer:**
@@ -245,6 +260,7 @@ npm run check          # build, tests, lint, manifest validation
 npm run sim:meters     # Fader dials against the emulator → sim-out/meters/
 npm run sim:keys       # Channel keys in every look and mute state → sim-out/keys/
 npm run sim:scenes     # Send dials, Mute Group and Snapshot keys → sim-out/scenes/
+npm run sim:bus        # XR-C on deckbus with a fake mixer, 30 s (watch it with the kit's tools/bus-monitor.mjs)
 npm run pi:preview     # settings panels in a browser with invented data → http://localhost:5299/fader-dial.html
 npm run showcase       # the README's GIF → docs/screenshots/xr-c.gif
 npm run icons          # regenerate icons
