@@ -109,8 +109,7 @@ Each dial is set to one channel → target (bus 1–6 or FX 1–4, depending on 
   - Muted only through a mute group or a DCA: a red frame instead of the fill.
 - **Mute Group:** "MG n" or a custom name, red when active, the member channels in small type.
 - **Snapshot:** number and mixer name. By default a press arms the key (it pulses yellow for 2 s) and a second press loads. "Immediate" and "long press" can be chosen instead. The last loaded snapshot is highlighted.
-  - **Saving (decided 2026-09-29, grill `C:devstreamdeck-kit
-otes2026-09-29-deckbus-readme-snapshot-sysaudio-grill.md`):**
+  - **Saving (decided 2026-09-29, grill `C:\dev\streamdeck-kit\notes\2026-09-29-deckbus-readme-snapshot-sysaudio-grill.md`):**
     - It uses the same slot as loading and is an option in the PI, **off by default**, because it overwrites a stored scene and cannot be undone.
     - A long press (~1.5 s) arms saving: the key pulses red and shows "SAVE?". A short press within 3 s confirms; otherwise saving is cancelled.
     - Afterwards the key briefly shows a check mark and the name. The existing name is kept.
