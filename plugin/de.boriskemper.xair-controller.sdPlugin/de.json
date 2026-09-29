@@ -66,7 +66,11 @@
 			"mode_arm": "Zweimal drücken",
 			"mode_immediate": "Sofort",
 			"mode_hold": "Halten",
-			"snapshot_mode_hint": "Zweimal drücken: Der erste Druck macht die Taste scharf (sie pulsiert 2 s gelb), der zweite lädt."
+			"snapshot_mode_hint": "Zweimal drücken: Der erste Druck macht die Taste scharf (sie pulsiert 2 s gelb), der zweite lädt.",
+			"header": "Namenszeile",
+			"header_plain": "Weiß",
+			"header_color": "Farbe",
+			"header_strip": "Streifen"
 		},
 		"Channel": "Kanal",
 		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "Ein Mischpult-Kanal auf einer Taste: stumm schalten, wie sein Scribble-Strip oder mit Aussteuerung.",

@@ -3,7 +3,7 @@ import type { JsonObject } from "@elgato/utils";
 import { parseStripId } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { dialColor } from "../render/colors";
-import { showsMeter, type FaderStyle } from "../render/fader-strip";
+import { showsMeter, type FaderHeader, type FaderStyle } from "../render/fader-strip";
 import { stripName } from "../render/strip-name";
 import { MixerDial, type DialContent, type DialInstance } from "./mixer-dial";
 
@@ -11,6 +11,8 @@ type FaderSettings = {
     /** The strip, e.g. "ch:3" (see xair-client stripId). */
     strip?: string;
     style?: FaderStyle;
+    /** The name line: plain (default), in the scribble colour, or as a coloured strip. */
+    header?: FaderHeader;
     /** dB per dial tick. */
     step?: number;
 } & JsonObject;
@@ -43,7 +45,7 @@ export class FaderDial extends MixerDial<FaderSettings> {
         const ref = parseStripId(inst.settings.strip);
         const strip = ref && mixerConnection.strip(ref);
         if (!ref || !strip) return { choose: true };
-        return { view: { name: stripName(ref, strip.name), color: dialColor(strip.color), faderDb: strip.db, fader: strip.fader, muted: strip.muted, style: inst.settings.style ?? "digital" } };
+        return { view: { name: stripName(ref, strip.name), color: dialColor(strip.color), faderDb: strip.db, fader: strip.fader, muted: strip.muted, style: inst.settings.style ?? "digital", header: inst.settings.header } };
     }
 
     protected override rotate(inst: DialInstance<FaderSettings>, ticks: number): void {

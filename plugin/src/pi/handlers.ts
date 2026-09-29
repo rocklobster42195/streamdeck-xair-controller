@@ -3,7 +3,7 @@
 import { piBridge, type PiPushMessage } from "@rocklobster42195/streamdeck-kit/bridge";
 import { discover, sendId, stripId, stripRefs } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
-import { mainFirst } from "../mixer/strip-order";
+import { isRightHalf, mainFirst } from "../mixer/strip-order";
 import type { ConnectionStatus, PiPush, StripKindLabel } from "./protocol";
 
 export function initPiBridge(): void {
@@ -17,7 +17,8 @@ export function initPiBridge(): void {
         const strips = mixerConnection.strips;
         const mixer = mixerConnection.current;
         if (!strips || !mixer) return [];
-        return mainFirst(stripRefs(mixer.model)).map((ref) => {
+        // A linked stereo pair is listed once (its first half controls both)
+        return mainFirst(stripRefs(mixer.model).filter((ref) => !isRightHalf(ref))).map((ref) => {
             const s = strips.strip(ref);
             const kind: StripKindLabel = ref.kind;
             return { value: stripId(ref), label: s.name || defaultLabel(kind, ref.n), sub: `${kindLabel(kind)}${ref.kind === "aux" || ref.kind === "lr" ? "" : ` ${ref.n}`}${s.linked ? " · stereo" : ""}` };
@@ -29,8 +30,8 @@ export function initPiBridge(): void {
         const mixer = mixerConnection.current;
         if (!strips || !mixer) return [];
         return stripRefs(mixer.model)
-            .filter((r) => r.kind === "ch")
-            .map((ref) => ({ value: stripId(ref), label: strips.strip(ref).name || defaultLabel("ch", ref.n), sub: `${kindLabel("ch")} ${ref.n}` }));
+            .filter((r) => r.kind === "ch" && !isRightHalf(r))
+            .map((ref) => ({ value: stripId(ref), label: strips.strip(ref).name || defaultLabel("ch", ref.n), sub: `${kindLabel("ch")} ${ref.n}${strips.strip(ref).linked ? " · stereo" : ""}` }));
     });
     piBridge.registerOptions("send-targets", () => {
         const mixer = mixerConnection.current;

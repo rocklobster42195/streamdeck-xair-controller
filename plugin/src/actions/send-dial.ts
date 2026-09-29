@@ -3,7 +3,7 @@ import type { JsonObject } from "@elgato/utils";
 import { parseSendTarget, parseStripId, type SendTarget } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { dialColor } from "../render/colors";
-import { showsMeter, type FaderStyle } from "../render/fader-strip";
+import { showsMeter, type FaderHeader, type FaderStyle } from "../render/fader-strip";
 import { stripName } from "../render/strip-name";
 import { stepDb } from "./fader-dial";
 import { MixerDial, type DialContent, type DialInstance } from "./mixer-dial";
@@ -14,6 +14,7 @@ type SendSettings = {
     /** The target, e.g. "bus:2" or "fx:1". */
     target?: string;
     style?: FaderStyle;
+    header?: FaderHeader;
     step?: number;
     /** Level (dB) to restore when the send is switched back on (X-Air has no send switch). */
     lastOnDb?: number;
@@ -50,6 +51,7 @@ export class SendDial extends MixerDial<SendSettings> {
                 muted: false,
                 caption: send.tap,
                 style: inst.settings.style ?? "digital",
+                header: inst.settings.header,
             },
         };
     }

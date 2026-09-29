@@ -3,6 +3,7 @@
 // bar or meter, stereo strips two.
 import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
 import { formatDb } from "xair-client";
+import { textOn } from "./colors";
 import { faderBarH } from "./fader-travel";
 import { mdiLanDisconnect, mdiTuneVertical, mdiVolumeOff } from "@mdi/js";
 
@@ -29,7 +30,11 @@ export type FaderView = {
     /** Needle positions in VU (classic style), one per channel. */
     vus: number[];
     style: FaderStyle;
+    /** The name line: white name (default), name in the scribble colour, or a coloured strip like the console's scribble strip. */
+    header?: FaderHeader;
 };
+
+export type FaderHeader = "plain" | "color" | "strip";
 
 const MUTED = "#ff5a5a";
 
@@ -47,7 +52,8 @@ function gauge(v: FaderView): string {
     // A send's name "Vocals → Reverb" goes on two lines; the tap (PRE/POST) small under the dB
     const [source, target] = v.name.split(" → ");
     const top = target ? 34 : 44;
-    parts.push(text(100, top, source, { size: 14, weight: "bold", maxWidth: 94 }));
+    // A strip next to the circle looks odd: "strip" colours the name like "color"
+    parts.push(text(100, top, source, { size: 14, weight: "bold", maxWidth: 94, color: (v.header ?? "plain") !== "plain" ? v.color : undefined }));
     if (target) parts.push(text(100, 51, `→ ${target}`, { size: 12, color: "#a4a4aa", maxWidth: 94 }));
     const y = target ? 71 : 64;
     parts.push(v.muted ? text(100, y, "MUTE", { size: 13, weight: "bold", color: MUTED }) : text(100, y, formatDb(v.faderDb), { size: 14, weight: "bold", color: v.color, maxWidth: 94 }));
@@ -61,11 +67,16 @@ function digital(v: FaderView): string {
     const marker = v.muted ? "#5a5a60" : v.color;
     // The name gets what the dB label leaves free
     const right = v.muted ? textWidth("MUTE", 12, { bold: true }) + 22 : textWidth(formatDb(v.faderDb), 13, { bold: true });
+    const header = v.header ?? "plain";
+    // "strip": the name line as a coloured band with black or white text, like the scribble strip
+    const band = header === "strip" ? (v.muted ? "#3a3a40" : v.color) : undefined;
+    const ink = band ? textOn(band) : undefined;
     const parts = [
-        text(8, 18, v.name, { size: 14, weight: "bold", maxWidth: Math.max(60, 184 - right - 10) }),
+        band ? `<rect x="3" y="2" width="194" height="23" rx="5" fill="${band}"/>` : "",
+        text(8, 18, v.name, { size: 14, weight: "bold", maxWidth: Math.max(60, 184 - right - 10), color: ink ?? (header === "color" ? v.color : undefined) }),
         v.muted
             ? `${mdi(mdiVolumeOff, 192 - textWidth("MUTE", 12, { bold: true }) - 22, 4, 18, MUTED)}${text(192, 18, "MUTE", { size: 12, weight: "bold", color: MUTED, anchor: "end" })}`
-            : text(192, 18, formatDb(v.faderDb), { size: 13, weight: "bold", color: v.color, anchor: "end" }),
+            : text(192, 18, formatDb(v.faderDb), { size: 13, weight: "bold", color: ink ?? v.color, anchor: "end" }),
         ...meterBar({ x: bx, y: 30, length: w, thickness: 22, levels: v.levels, peaks: v.peaks, segments: 36, off: v.muted ? "#1a1c20" : undefined }),
         ...meterScaleMarks(bx, 57, w, METER_TICKS),
         // The fader by its travel (-∞ = 0 %, +10 dB = 100 %), not on the meter's dBFS scale

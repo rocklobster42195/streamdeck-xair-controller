@@ -7,7 +7,7 @@ import { ActionsState, DeckBus } from "@rocklobster42195/streamdeck-kit/bus";
 import { meterIndices, stripId, stripRefs, type StripRef } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { MeterFeed } from "../mixer/meter-feed";
-import { mainFirst } from "../mixer/strip-order";
+import { isRightHalf, mainFirst } from "../mixer/strip-order";
 import { stripName } from "../render/strip-name";
 
 type Stream = { topic: string; label: string; stereo: boolean; ref: StripRef };
@@ -77,11 +77,6 @@ function update(): void {
         );
     }
     serveMeters();
-}
-
-/** A linked stereo pair is one stream (on its first half, with both sides). */
-function isRightHalf(ref: StripRef): boolean {
-    return (ref.kind === "ch" || ref.kind === "bus") && ref.n % 2 === 0 && !!mixerConnection.strip({ kind: ref.kind, n: ref.n - 1 })?.linked;
 }
 
 /** Ask the mixer for meters while any offered topic has a subscriber (again after a reconnect). */

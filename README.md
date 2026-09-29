@@ -78,7 +78,9 @@ One channel on a dial: its level, mute and meter.
 | Tap the display | 0 dB (unity) |
 | Tap and hold | -∞ (fader all the way down) |
 
-The display shows the channel name, the fader in dB in the channel's colour, and one of four [display styles](#meters-and-display-styles). A muted channel shows **MUTE** in red, and its meter dims. Any strip works: input channels, aux in, FX returns, buses, FX sends, Main LR and DCAs.
+The display shows the channel name, the fader in dB in the channel's colour, and one of four [display styles](#meters-and-display-styles). A muted channel shows **MUTE** in red, and its meter dims. Any strip works: input channels, aux in, FX returns, buses, FX sends, Main LR and DCAs. A linked stereo pair appears once in the list; it moves both channels.
+
+**Name line** (in the settings): the name in white (default), name and dB in the channel's colour, or the whole line as a coloured strip like the scribble strip on the console.
 
 ### Send *(dial)*
 

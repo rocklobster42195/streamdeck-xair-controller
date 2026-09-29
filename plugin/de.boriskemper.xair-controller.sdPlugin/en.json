@@ -66,7 +66,11 @@
 			"mode_arm": "Press twice",
 			"mode_immediate": "Immediately",
 			"mode_hold": "Hold",
-			"snapshot_mode_hint": "Press twice: the first press arms the key (it pulses yellow for 2 s), the second loads."
+			"snapshot_mode_hint": "Press twice: the first press arms the key (it pulses yellow for 2 s), the second loads.",
+			"header": "Name line",
+			"header_plain": "White",
+			"header_color": "Colour",
+			"header_strip": "Strip"
 		},
 		"Channel": "Channel",
 		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "A mixer channel on a key: mute, like its scribble strip, or with its meter.",

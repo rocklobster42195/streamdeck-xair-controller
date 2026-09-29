@@ -32,6 +32,14 @@
     <div class="pi-hint pi-padded" data-i18n="pi.send_style_hint"></div>
   </pi-section>
 
+  <pi-section title="pi.header">
+    <pi-choice setting="header" default="plain" columns="3" data-options='[
+      {"value":"plain","label":"pi.header_plain"},
+      {"value":"color","label":"pi.header_color"},
+      {"value":"strip","label":"pi.header_strip"}
+    ]'></pi-choice>
+  </pi-section>
+
   <pi-section title="pi.dial_controls">
     <pi-range setting="step" min="0.5" max="6" step="0.5" default="1" unit=" dB" label="pi.dial_step"></pi-range>
   </pi-section>
