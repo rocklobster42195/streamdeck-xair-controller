@@ -2,7 +2,8 @@
 // mixer is online, offers the meters of every strip as streams ("meters/ch:3", with the mixer's
 // names), and sends them only while some peer subscribes — the mixer is asked for meters only then.
 import streamDeck from "@elgato/streamdeck";
-import { DeckBus } from "@rocklobster42195/streamdeck-kit/bus";
+import { trackActions } from "@rocklobster42195/streamdeck-kit/bridge";
+import { ActionsState, DeckBus } from "@rocklobster42195/streamdeck-kit/bus";
 import { meterIndices, stripId, stripRefs, type StripRef } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { MeterFeed } from "../mixer/meter-feed";
@@ -11,6 +12,11 @@ import { stripName } from "../render/strip-name";
 type Stream = { topic: string; label: string; stereo: boolean; ref: StripRef };
 
 export const xacBus = new DeckBus({ id: "de.boriskemper.xair-controller", name: "XR-C", version: "0.1.0", caps: ["meters"] });
+
+/** Call before streamDeck.connect(): shares where XR-C's actions are visible ("actions" state). */
+export function trackXacActions(): void {
+    trackActions(new ActionsState(xacBus));
+}
 
 let streams: Stream[] = [];
 let lastOffer = "";

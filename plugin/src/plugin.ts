@@ -5,7 +5,7 @@ import { FaderDial } from "./actions/fader-dial";
 import { MuteGroupKey } from "./actions/mute-group-key";
 import { SendDial } from "./actions/send-dial";
 import { SnapshotKey } from "./actions/snapshot-key";
-import { startXacBus } from "./bus/xac-bus";
+import { startXacBus, trackXacActions } from "./bus/xac-bus";
 import { mixerConnection, type GlobalSettings } from "./mixer/connection";
 import { initPiBridge } from "./pi/handlers";
 
@@ -20,6 +20,7 @@ streamDeck.actions.registerAction(new MuteGroupKey());
 streamDeck.actions.registerAction(new SnapshotKey());
 
 initPiBridge();
+trackXacActions();
 streamDeck.settings.onDidReceiveGlobalSettings<GlobalSettings>((ev) => mixerConnection.configure(ev.settings));
 
 await streamDeck.connect();
