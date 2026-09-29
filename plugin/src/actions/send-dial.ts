@@ -52,6 +52,7 @@ export class SendDial extends MixerDial<SendSettings> {
                 caption: send.tap,
                 style: inst.settings.style ?? "digital",
                 header: inst.settings.header,
+                inverted: strip.color.inverted,
             },
         };
     }

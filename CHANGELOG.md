@@ -8,7 +8,7 @@ All notable changes to XR-C (X-Air Controller) are documented here.
 - Tested on a real XR12 (firmware 1.18): names, colours, meters per channel (also stereo pairs and Main LR), fader changes.
 - The fader shows its **travel** as its own bar (-∞ = 0 %, 0 dB = 75 % with a tick, +10 dB = 100 %) on the Fader dial and the Channel key's meter look, instead of a marker on the meter's dBFS scale.
 - Main LR comes first in the channel list (and in the levels offered on deckbus). A linked stereo pair is listed once.
-- Fader and Send dials: the name line can be white (as before), in the channel's colour, or a coloured strip like the scribble strip.
+- Fader and Send dials and the Channel key's meter look: the name line can be white (as before), in the channel's colour, or a coloured strip like the scribble strip (inverted colours: dark with a coloured frame).
 - **deckbus:** XR-C tells other plugins whether the mixer is online and offers the meters of every strip, with the mixer's names; they are sent only while another plugin shows them (e.g. MA-C's Panorama).
 - **Send** dial: a channel's send to a bus or FX (level, off/on, 0 dB), with the channel's meter and the send's tap; the same looks as the Fader.
 - **Mute Group** key: switches mute group 1–4, shows its channels; own title possible.

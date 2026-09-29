@@ -32,6 +32,8 @@ export type FaderView = {
     style: FaderStyle;
     /** The name line: white name (default), name in the scribble colour, or a coloured strip like the console's scribble strip. */
     header?: FaderHeader;
+    /** Inverted scribble colour (dark strip, text and frame in the colour). */
+    inverted?: boolean;
 };
 
 export type FaderHeader = "plain" | "color" | "strip";
@@ -68,11 +70,13 @@ function digital(v: FaderView): string {
     // The name gets what the dB label leaves free
     const right = v.muted ? textWidth("MUTE", 12, { bold: true }) + 22 : textWidth(formatDb(v.faderDb), 13, { bold: true });
     const header = v.header ?? "plain";
-    // "strip": the name line as a coloured band with black or white text, like the scribble strip
-    const band = header === "strip" ? (v.muted ? "#3a3a40" : v.color) : undefined;
-    const ink = band ? textOn(band) : undefined;
+    // "strip": the name line as a coloured band with black or white text, like the scribble strip;
+    // an inverted colour stays dark with frame and text in the colour, as on the console
+    const invertedBand = header === "strip" && !!v.inverted && !v.muted;
+    const band = header === "strip" ? (v.muted ? "#3a3a40" : invertedBand ? "#101010" : v.color) : undefined;
+    const ink = invertedBand ? v.color : band ? textOn(band) : undefined;
     const parts = [
-        band ? `<rect x="3" y="2" width="194" height="23" rx="5" fill="${band}"/>` : "",
+        band ? `<rect x="3" y="2" width="194" height="23" rx="5" fill="${band}"${invertedBand ? ` stroke="${v.color}" stroke-width="1.5"` : ""}/>` : "",
         text(8, 18, v.name, { size: 14, weight: "bold", maxWidth: Math.max(60, 184 - right - 10), color: ink ?? (header === "color" ? v.color : undefined) }),
         v.muted
             ? `${mdi(mdiVolumeOff, 192 - textWidth("MUTE", 12, { bold: true }) - 22, 4, 18, MUTED)}${text(192, 18, "MUTE", { size: 12, weight: "bold", color: MUTED, anchor: "end" })}`

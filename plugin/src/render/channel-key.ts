@@ -9,6 +9,7 @@ import { formatDb, type MuteReason, type StripColor } from "xair-client";
 import { mdiLanDisconnect, mdiTuneVertical, mdiVolumeOff } from "@mdi/js";
 import { scribbleColor, textOn } from "./colors";
 import { faderBarV } from "./fader-travel";
+import type { FaderHeader } from "./fader-strip";
 
 export type ChannelLook = "scribble" | "meter";
 
@@ -25,6 +26,8 @@ export type ChannelKeyView = {
     peaks?: number[];
     clipped?: boolean;
     showDb?: boolean;
+    /** Meter look: the name line white, in the colour, or as a scribble strip (see the Fader dial). */
+    header?: FaderHeader;
 };
 
 const SIZE = 144;
@@ -68,7 +71,7 @@ function meterLook(v: ChannelKeyView): string[] {
     const muted = !!v.muted;
     const parts = [
         `<rect width="${SIZE}" height="${SIZE}" rx="14" fill="#101010"/>`,
-        `<text x="${SIZE / 2}" y="22" ${font} font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="middle">${esc(wrap(v.name, SIZE - 16, 17, 1)[0] ?? "")}</text>`,
+        ...nameLine(v, color),
         ...meterBar({ x: bx, y: top, length: h, thickness: width, levels, peaks: v.peaks, segments: 18, gap: 1.5, orientation: "vertical" }),
     ];
     // The fader by its travel beside the meter (-∞ at the bottom, +10 dB at the top)
@@ -82,6 +85,20 @@ function meterLook(v: ChannelKeyView): string[] {
         parts.push(`<text x="${SIZE / 2}" y="${SIZE - 10}" ${font} font-size="15" font-weight="700" fill="${color}" text-anchor="middle">${esc(formatDb(v.faderDb))}</text>`);
     }
     return parts;
+}
+
+/** The meter look's name at the top: white, in the colour, or a strip (dark with a coloured frame when inverted). */
+function nameLine(v: ChannelKeyView, color: string): string[] {
+    const header = v.header ?? "plain";
+    const name = esc(wrap(v.name, SIZE - 20, 17, 1)[0] ?? "");
+    if (header !== "strip") return [`<text x="${SIZE / 2}" y="22" ${font} font-size="17" font-weight="700" fill="${header === "color" ? color : "#FFFFFF"}" text-anchor="middle">${name}</text>`];
+    const inverted = v.color.inverted && v.color.name !== "off";
+    const band = v.muted ? "#3a3a40" : inverted ? "#101010" : color;
+    const ink = v.muted ? "#FFFFFF" : inverted ? color : textOn(color);
+    return [
+        `<rect x="6" y="4" width="${SIZE - 12}" height="24" rx="6" fill="${band}"${inverted && !v.muted ? ` stroke="${color}" stroke-width="2"` : ""}/>`,
+        `<text x="${SIZE / 2}" y="22" ${font} font-size="17" font-weight="700" fill="${ink}" text-anchor="middle">${name}</text>`,
+    ];
 }
 
 /** Not ready: no mixer, mixer offline, no channel chosen. */

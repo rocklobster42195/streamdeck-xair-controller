@@ -5,6 +5,7 @@ import { muteReason, parseStripId } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { MeterFeed } from "../mixer/meter-feed";
 import { renderChannelKey, renderChannelMessage, type ChannelLook } from "../render/channel-key";
+import type { FaderHeader } from "../render/fader-strip";
 import { stripName } from "../render/strip-name";
 
 type ChannelSettings = {
@@ -14,6 +15,8 @@ type ChannelSettings = {
     thinMeter?: boolean;
     /** Show the fader in dB (default on). */
     showDb?: boolean;
+    /** Meter look: the name line white, in the colour, or as a scribble strip. */
+    header?: FaderHeader;
 } & JsonObject;
 
 type Instance = { action: KeyAction<ChannelSettings>; settings: ChannelSettings; feed: MeterFeed; downAt?: number; lastImage?: string };
@@ -123,6 +126,7 @@ export class ChannelKey extends SingletonAction<ChannelSettings> {
             peaks: meter?.peaks,
             clipped: meter?.clipped,
             showDb: inst.settings.showDb !== false,
+            header: inst.settings.header,
         });
     }
 }

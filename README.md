@@ -80,7 +80,7 @@ One channel on a dial: its level, mute and meter.
 
 The display shows the channel name, the fader in dB in the channel's colour, and one of four [display styles](#meters-and-display-styles). A muted channel shows **MUTE** in red, and its meter dims. Any strip works: input channels, aux in, FX returns, buses, FX sends, Main LR and DCAs. A linked stereo pair appears once in the list; it moves both channels.
 
-**Name line** (in the settings): the name in white (default), name and dB in the channel's colour, or the whole line as a coloured strip like the scribble strip on the console.
+**Name line** (in the settings): the name in white (default), name and dB in the channel's colour, or the whole line as a coloured strip like the scribble strip on the console. An inverted colour stays dark, with frame and text in the colour, as on the console.
 
 ### Send *(dial)*
 
@@ -104,7 +104,7 @@ One channel on a key. **Press** to mute; **hold** (0.6 s) to reset the peak hold
   - Muted: the key turns red with a crossed-out speaker. A red channel also gets stripes, so red alone never means "muted".
   - Muted through a mute group or a DCA: a red frame with "MG" or "DCA" instead.
   - Optionally a thin meter along the bottom edge.
-- **Meter** look: LED bars (one for mono, two for stereo) with a peak line, a red clip bar on top and the fader as a slim bar beside it.
+- **Meter** look: LED bars (one for mono, two for stereo) with a peak line, a red clip bar on top and the fader as a slim bar beside it. Its name line can be white, coloured or a strip, like on the Fader dial.
 
 ### Mute Group *(key)*
 

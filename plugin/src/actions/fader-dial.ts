@@ -45,7 +45,7 @@ export class FaderDial extends MixerDial<FaderSettings> {
         const ref = parseStripId(inst.settings.strip);
         const strip = ref && mixerConnection.strip(ref);
         if (!ref || !strip) return { choose: true };
-        return { view: { name: stripName(ref, strip.name), color: dialColor(strip.color), faderDb: strip.db, fader: strip.fader, muted: strip.muted, style: inst.settings.style ?? "digital", header: inst.settings.header } };
+        return { view: { name: stripName(ref, strip.name), color: dialColor(strip.color), faderDb: strip.db, fader: strip.fader, muted: strip.muted, style: inst.settings.style ?? "digital", header: inst.settings.header, inverted: strip.color.inverted } };
     }
 
     protected override rotate(inst: DialInstance<FaderSettings>, ticks: number): void {

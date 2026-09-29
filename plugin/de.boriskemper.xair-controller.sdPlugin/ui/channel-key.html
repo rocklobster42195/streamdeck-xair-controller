@@ -27,6 +27,14 @@
     <pi-toggle setting="showDb" label="pi.show_db" data-default="true"></pi-toggle>
   </pi-section>
 
+  <pi-section title="pi.header" data-show-when="look=meter" data-show-default="scribble">
+    <pi-choice setting="header" default="plain" columns="3" data-options='[
+      {"value":"plain","label":"pi.header_plain"},
+      {"value":"color","label":"pi.header_color"},
+      {"value":"strip","label":"pi.header_strip"}
+    ]'></pi-choice>
+  </pi-section>
+
   <xac-connection-card></xac-connection-card>
 
   <div class="pi-footer"><span data-plugin-version>XR-C</span></div>
