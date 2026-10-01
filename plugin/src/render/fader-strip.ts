@@ -1,7 +1,7 @@
 // The Fader dial's touch-strip segment (200×100): "Digital" (LED bars lying, scale, fader marker),
 // "Classic" (analog VU meters), or just the fader as a ring or a pie (no meter). Mono strips get one
 // bar or meter, stereo strips two.
-import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, scrimBox, scrimDisc, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
+import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, scrimDisc, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
 import { formatDb } from "xair-client";
 import { textOn } from "./colors";
 import { faderBarH } from "./fader-travel";
@@ -42,8 +42,20 @@ export type FaderHeader = "plain" | "color" | "strip";
 
 const MUTED = "#ff5a5a";
 
-/** Dims an effect behind the whole strip, so meters and text stay readable. */
-const SCRIM = `<rect width="200" height="100" fill="#000" opacity="0.55"/>`;
+/**
+ * A dark box behind one element over an effect (name, dB, a meter row): only where something is
+ * drawn, so the effect still shows in the gaps between them.
+ */
+function shade(x: number, y: number, w: number, h: number): string {
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="5" fill="#000" opacity="0.55"/>`;
+}
+
+/** The box behind a text line: `x`/`baseline` as drawn, `anchor` start or end. */
+function shadeText(x: number, baseline: number, value: string, size: number, opts: { bold?: boolean; maxWidth?: number; anchor?: "start" | "end" } = {}): string {
+    const w = Math.min(textWidth(value, size, { bold: opts.bold }), opts.maxWidth ?? Infinity);
+    const left = opts.anchor === "end" ? x - w : x;
+    return shade(left - 4, baseline - size + 1, w + 8, size + 4);
+}
 
 export function renderFaderStrip(v: FaderView): string {
     if (v.style === "classic") return classic(v);
@@ -55,16 +67,25 @@ export function renderFaderStrip(v: FaderView): string {
 function gauge(v: FaderView): string {
     const color = v.muted ? "#5a5a60" : v.color;
     // Over an effect: dark only behind the circle and the text, the effect stays visible around them
-    const scrims = v.background ? [scrimDisc(50, 50, 44), scrimBox(94, 22, 102, 62)] : [];
+    const [source, target] = v.name.split(" → ");
+    const top = target ? 34 : 44;
+    const y = target ? 71 : 64;
+    const db = v.muted ? "MUTE" : formatDb(v.faderDb);
+    const scrims = v.background
+        ? [
+              scrimDisc(50, 50, 44),
+              shadeText(100, top, source, 14, { bold: true, maxWidth: 94 }),
+              target ? shadeText(100, 51, `→ ${target}`, 12, { maxWidth: 94 }) : "",
+              shadeText(100, y, db, v.muted ? 13 : 14, { bold: true, maxWidth: 94 }),
+              v.caption && !v.muted ? shadeText(100, y + 15, v.caption, 10) : "",
+          ]
+        : [];
     const parts = [...scrims, ...(v.style === "pie" ? pie(50, 50, 38, v.muted ? 0 : v.fader, color) : arc(50, 50, 34, v.fader, color))];
     if (v.muted) parts.push(mdi(mdiVolumeOff, 34, 34, 32, MUTED));
     // A send's name "Vocals → Reverb" goes on two lines; the tap (PRE/POST) small under the dB
-    const [source, target] = v.name.split(" → ");
-    const top = target ? 34 : 44;
     // A strip next to the circle looks odd: "strip" colours the name like "color"
     parts.push(text(100, top, source, { size: 14, weight: "bold", maxWidth: 94, color: (v.header ?? "plain") !== "plain" ? v.color : undefined }));
     if (target) parts.push(text(100, 51, `→ ${target}`, { size: 12, color: "#a4a4aa", maxWidth: 94 }));
-    const y = target ? 71 : 64;
     parts.push(v.muted ? text(100, y, "MUTE", { size: 13, weight: "bold", color: MUTED }) : text(100, y, formatDb(v.faderDb), { size: 14, weight: "bold", color: v.color, maxWidth: 94 }));
     if (v.caption && !v.muted) parts.push(text(100, y + 15, v.caption, { size: 10, color: "#8a8a90" }));
     return stripImage(parts, undefined, v.background);
@@ -82,11 +103,22 @@ function digital(v: FaderView): string {
     const invertedBand = header === "strip" && !!v.inverted && !v.muted;
     const band = header === "strip" ? (v.muted ? "#3a3a40" : invertedBand ? "#101010" : v.color) : undefined;
     const ink = invertedBand ? v.color : band ? textOn(band) : undefined;
+    const nameMax = Math.max(60, 184 - right - 10);
+    const dbText = v.muted ? "MUTE" : formatDb(v.faderDb);
+    // Over an effect: dark only behind each row, the effect shows in the gaps
+    const scrims = v.background
+        ? [
+              band ? "" : shadeText(8, 18, v.name, 14, { bold: true, maxWidth: nameMax }),
+              band ? "" : v.muted ? shade(192 - right - 4, 4, right + 8, 18) : shadeText(192, 18, dbText, 13, { bold: true, anchor: "end" }),
+              shade(bx - 3, 27, w + 6, 28),
+              shade(bx - 3, 56, w + 6, 17),
+              shade(bx - 3, 81, w + 6, 14),
+          ]
+        : [];
     const parts = [
-        // Over an effect: the meters need the whole width, so the effect is dimmed behind all of it
-        v.background ? SCRIM : "",
+        ...scrims,
         band ? `<rect x="3" y="2" width="194" height="23" rx="5" fill="${band}"${invertedBand ? ` stroke="${v.color}" stroke-width="1.5"` : ""}/>` : "",
-        text(8, 18, v.name, { size: 14, weight: "bold", maxWidth: Math.max(60, 184 - right - 10), color: ink ?? (header === "color" ? v.color : undefined) }),
+        text(8, 18, v.name, { size: 14, weight: "bold", maxWidth: nameMax, color: ink ?? (header === "color" ? v.color : undefined) }),
         v.muted
             ? `${mdi(mdiVolumeOff, 192 - textWidth("MUTE", 12, { bold: true }) - 22, 4, 18, MUTED)}${text(192, 18, "MUTE", { size: 12, weight: "bold", color: MUTED, anchor: "end" })}`
             : text(192, 18, formatDb(v.faderDb), { size: 13, weight: "bold", color: ink ?? v.color, anchor: "end" }),
@@ -103,13 +135,15 @@ function digital(v: FaderView): string {
 }
 
 function classic(v: FaderView): string {
-    const parts: string[] = v.background ? [SCRIM] : [];
+    const parts: string[] = [];
     if (v.vus.length === 1) parts.push(...vuMeter({ x: 40, y: 4, width: 120, height: 82, vu: v.vus[0], label: "MONO", id: "vm" }));
     else {
         parts.push(...vuMeter({ x: 4, y: 6, width: 94, height: 80, vu: v.vus[0], label: "LEFT", id: "vl" }));
         parts.push(...vuMeter({ x: 102, y: 6, width: 94, height: 80, vu: v.vus[1], label: "RIGHT", id: "vr" }));
     }
     const caption = `${escapeXml(v.name.toUpperCase())} · ${v.muted ? "MUTE" : escapeXml(dbLabel(v))}`;
+    // Over an effect: a box behind the caption (letter-spaced, so a little wider than measured)
+    if (v.background) parts.push(shade(100 - textWidth(caption, 9) / 2 - 18, 88, textWidth(caption, 9) + 36, 13));
     parts.push(`<text x="100" y="97" font-family="Arial,sans-serif" font-size="9" fill="${v.muted ? MUTED : "#bfa76a"}" text-anchor="middle" letter-spacing="1.5">${caption}</text>`);
     return stripImage(parts, "#141210", v.background);
 }
