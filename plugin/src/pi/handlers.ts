@@ -1,7 +1,7 @@
 // XR-C's part of the kit's PI bridge: connection status, the strip list for <pi-select>, and the
 // mixer search for the connection card, and the dial backgrounds (Panorama effects).
 import streamDeck from "@elgato/streamdeck";
-import { backgroundOptions } from "../render/panorama";
+import { backgroundOptions } from "@rocklobster42195/streamdeck-kit";
 import { piBridge, type PiPushMessage } from "@rocklobster42195/streamdeck-kit/bridge";
 import { discover, sendId, stripId, stripRefs } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
@@ -16,7 +16,7 @@ export function initPiBridge(): void {
         await piBridge.reply(json({ event: "discover-result", requestId: msg.requestId as number, mixers }));
     });
     // Dial backgrounds: like the neighbour (default), none, or one of the kit's Panorama effects
-    piBridge.registerOptions("backgrounds", () => backgroundOptions((k) => streamDeck.i18n.t(k)));
+    piBridge.registerOptions("backgrounds", () => backgroundOptions({ auto: streamDeck.i18n.t("pi.background_auto"), none: streamDeck.i18n.t("pi.background_none") }));
     piBridge.registerOptions("strips", () => {
         const strips = mixerConnection.strips;
         const mixer = mixerConnection.current;

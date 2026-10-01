@@ -15,7 +15,7 @@ import type { JsonObject } from "@elgato/utils";
 import { frames } from "@rocklobster42195/streamdeck-kit";
 import type { StripRef } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
-import { onNeighboursChange, panorama, resolveBackgrounds } from "../render/panorama";
+import { onNeighboursChange, panorama, resolveDialBackgrounds } from "../render/panorama";
 import { MeterFeed, type MeterFrame } from "../mixer/meter-feed";
 import { renderFaderMessage, renderFaderStrip, type FaderView } from "../render/fader-strip";
 
@@ -37,7 +37,7 @@ const allDials = new Map<string, { inst: DialInstance<JsonObject>; redraw: () =>
 /** Work out every dial's effect (autos follow their neighbours) and join or leave the Panorama. */
 function arrangeBackgrounds(): void {
     const spots = [...allDials].map(([context, d]) => ({ context, device: d.inst.device, column: d.inst.column, background: typeof d.inst.settings.background === "string" ? d.inst.settings.background : undefined }));
-    const effects = resolveBackgrounds(spots);
+    const effects = resolveDialBackgrounds(spots);
     for (const [context, d] of allDials) {
         const effect = effects.get(context);
         if (effect === d.inst.effect) continue;
