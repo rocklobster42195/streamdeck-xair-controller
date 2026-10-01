@@ -14,9 +14,12 @@ type Stream = { topic: string; label: string; stereo: boolean; ref: StripRef };
 
 export const xacBus = new DeckBus({ id: "de.boriskemper.xair-controller", name: "XR-C", version: "0.1.0", caps: ["meters"] });
 
+/** Where XR-C's actions are visible ("actions" state); the Panorama adds each dial's effect. */
+export const xacActions = new ActionsState(xacBus);
+
 /** Call before streamDeck.connect(): shares where XR-C's actions are visible ("actions" state). */
 export function trackXacActions(): void {
-    trackActions(new ActionsState(xacBus));
+    trackActions(xacActions);
 }
 
 let streams: Stream[] = [];
