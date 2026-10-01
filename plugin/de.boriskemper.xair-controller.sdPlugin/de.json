@@ -74,7 +74,7 @@
 			"background": "Hintergrund",
 			"background_auto": "Wie der Nachbar",
 			"background_none": "Kein Effekt",
-			"background_hint": "Ein Panorama-Effekt hinter dem Dial. „Wie der Nachbar“ übernimmt den Effekt des Dials daneben, auch von MA-C oder HA-C: dann läuft ein Panorama über alle (das Plugin ganz links rechnet ihn)."
+			"background_hint": "Ein Panorama-Effekt hinter dem Dial. „Wie der Nachbar“ übernimmt den Effekt des Dials daneben, auch von MA-C oder HA-C: dann läuft ein Panorama über alle (das Plugin ganz links rechnet ihn). Wer Zahlen und Pegel ganz genau lesen will, wählt „Kein Effekt“."
 		},
 		"Channel": "Kanal",
 		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "Ein Mischpult-Kanal auf einer Taste: stumm schalten, wie sein Scribble-Strip oder mit Aussteuerung.",

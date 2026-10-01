@@ -74,7 +74,7 @@
 			"background": "Background",
 			"background_auto": "Like the neighbour",
 			"background_none": "No effect",
-			"background_hint": "A Panorama effect behind the dial. “Like the neighbour” takes the effect of the dial next to it, also from MA-C or HA-C: one Panorama then runs across all of them (the plugin on the left runs it)."
+			"background_hint": "A Panorama effect behind the dial. “Like the neighbour” takes the effect of the dial next to it, also from MA-C or HA-C: one Panorama then runs across all of them (the plugin on the left runs it). To read values and meters at a glance, choose “No effect”."
 		},
 		"Channel": "Channel",
 		"A mixer channel on a key: mute, like its scribble strip, or with its meter.": "A mixer channel on a key: mute, like its scribble strip, or with its meter.",
