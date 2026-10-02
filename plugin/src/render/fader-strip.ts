@@ -1,17 +1,18 @@
-// The Fader dial's touch-strip segment (200×100): "Digital" (LED bars lying, scale, fader marker),
-// "Classic" (analog VU meters), or just the fader as a ring or a pie (no meter). Mono strips get one
-// bar or meter, stereo strips two.
-import { METER_TICKS, arc, escapeXml, meterBar, meterScaleMarks, mdi, pie, scrimDisc, stripImage, text, textWidth, vuMeter } from "@rocklobster42195/streamdeck-kit";
+// The Fader and Send dials' touch-strip segment (200×100): the kit's level strip (renderLevelStrip,
+// the same as in SA-C) in its four looks, "Digital", "Classic", "Ring" and "Pie", with XR-C's
+// parts: the value in dB, the scribble strip's colour and name line, a send's name on two lines
+// ("Vocals → Reverb") and its tap ("PRE"), and the fader by its travel under the meter.
+import { levelStyleShowsMeter, renderLevelMessage, renderLevelStrip, type LevelHeader, type LevelStyle } from "@rocklobster42195/streamdeck-kit";
 import { formatDb } from "xair-client";
-import { textOn } from "./colors";
 import { faderBarH } from "./fader-travel";
-import { mdiLanDisconnect, mdiTuneVertical, mdiVolumeOff } from "@mdi/js";
+import { mdiLanDisconnect, mdiTuneVertical } from "@mdi/js";
 
-export type FaderStyle = "digital" | "classic" | "ring" | "pie";
+export type FaderStyle = LevelStyle;
+export type FaderHeader = LevelHeader;
 
 /** Styles that show a meter (and need the mixer's meter data). */
 export function showsMeter(style: FaderStyle): boolean {
-    return style === "digital" || style === "classic";
+    return levelStyleShowsMeter(style);
 }
 
 export type FaderView = {
@@ -38,121 +39,30 @@ export type FaderView = {
     inverted?: boolean;
 };
 
-export type FaderHeader = "plain" | "color" | "strip";
-
-const MUTED = "#ff5a5a";
-
-/**
- * A dark box behind one element over an effect (name, dB, a meter row): only where something is
- * drawn, so the effect still shows in the gaps between them.
- */
-function shade(x: number, y: number, w: number, h: number): string {
-    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="5" fill="#000" opacity="0.55"/>`;
-}
-
-/** The box behind a text line: `x`/`baseline` as drawn, `anchor` start or end. */
-function shadeText(x: number, baseline: number, value: string, size: number, opts: { bold?: boolean; maxWidth?: number; anchor?: "start" | "end" } = {}): string {
-    const w = Math.min(textWidth(value, size, { bold: opts.bold }), opts.maxWidth ?? Infinity);
-    const left = opts.anchor === "end" ? x - w : x;
-    return shade(left - 4, baseline - size + 1, w + 8, size + 4);
-}
-
 export function renderFaderStrip(v: FaderView): string {
-    if (v.style === "classic") return classic(v);
-    if (v.style === "ring" || v.style === "pie") return gauge(v);
-    return digital(v);
-}
-
-/** Ring or pie with the fader position, name and dB next to it (like MA-C's Volume dial). */
-function gauge(v: FaderView): string {
-    const color = v.muted ? "#5a5a60" : v.color;
-    // Over an effect: dark only behind the circle and the text, the effect stays visible around them
+    // A send's name "Vocals → Reverb": the target is its own line in the ring and pie looks
     const [source, target] = v.name.split(" → ");
-    const top = target ? 34 : 44;
-    const y = target ? 71 : 64;
-    const db = v.muted ? "MUTE" : formatDb(v.faderDb);
-    const scrims = v.background
-        ? [
-              scrimDisc(50, 50, 44),
-              shadeText(100, top, source, 14, { bold: true, maxWidth: 94 }),
-              target ? shadeText(100, 51, `→ ${target}`, 12, { maxWidth: 94 }) : "",
-              shadeText(100, y, db, v.muted ? 13 : 14, { bold: true, maxWidth: 94 }),
-              v.caption && !v.muted ? shadeText(100, y + 15, v.caption, 10) : "",
-          ]
-        : [];
-    const parts = [...scrims, ...(v.style === "pie" ? pie(50, 50, 38, v.muted ? 0 : v.fader, color) : arc(50, 50, 34, v.fader, color))];
-    if (v.muted) parts.push(mdi(mdiVolumeOff, 34, 34, 32, MUTED));
-    // A send's name "Vocals → Reverb" goes on two lines; the tap (PRE/POST) small under the dB
-    // A strip next to the circle looks odd: "strip" colours the name like "color"
-    parts.push(text(100, top, source, { size: 14, weight: "bold", maxWidth: 94, color: (v.header ?? "plain") !== "plain" ? v.color : undefined }));
-    if (target) parts.push(text(100, 51, `→ ${target}`, { size: 12, color: "#a4a4aa", maxWidth: 94 }));
-    parts.push(v.muted ? text(100, y, "MUTE", { size: 13, weight: "bold", color: MUTED }) : text(100, y, formatDb(v.faderDb), { size: 14, weight: "bold", color: v.color, maxWidth: 94 }));
-    if (v.caption && !v.muted) parts.push(text(100, y + 15, v.caption, { size: 10, color: "#8a8a90" }));
-    return stripImage(parts, undefined, v.background);
-}
-
-function digital(v: FaderView): string {
-    const w = 184;
-    const bx = 8;
-    const marker = v.muted ? "#5a5a60" : v.color;
-    // The name gets what the dB label leaves free
-    const right = v.muted ? textWidth("MUTE", 12, { bold: true }) + 22 : textWidth(formatDb(v.faderDb), 13, { bold: true });
-    const header = v.header ?? "plain";
-    // "strip": the name line as a coloured band with black or white text, like the scribble strip;
-    // an inverted colour stays dark with frame and text in the colour, as on the console
-    const invertedBand = header === "strip" && !!v.inverted && !v.muted;
-    const band = header === "strip" ? (v.muted ? "#3a3a40" : invertedBand ? "#101010" : v.color) : undefined;
-    const ink = invertedBand ? v.color : band ? textOn(band) : undefined;
-    const nameMax = Math.max(60, 184 - right - 10);
-    const dbText = v.muted ? "MUTE" : formatDb(v.faderDb);
-    // Over an effect: dark only behind each row, the effect shows in the gaps
-    const scrims = v.background
-        ? [
-              band ? "" : shadeText(8, 18, v.name, 14, { bold: true, maxWidth: nameMax }),
-              band ? "" : v.muted ? shade(192 - right - 4, 4, right + 8, 18) : shadeText(192, 18, dbText, 13, { bold: true, anchor: "end" }),
-              shade(bx - 3, 27, w + 6, 28),
-              shade(bx - 3, 56, w + 6, 17),
-              shade(bx - 3, 81, w + 6, 14),
-          ]
-        : [];
-    const parts = [
-        ...scrims,
-        band ? `<rect x="3" y="2" width="194" height="23" rx="5" fill="${band}"${invertedBand ? ` stroke="${v.color}" stroke-width="1.5"` : ""}/>` : "",
-        text(8, 18, v.name, { size: 14, weight: "bold", maxWidth: nameMax, color: ink ?? (header === "color" ? v.color : undefined) }),
-        v.muted
-            ? `${mdi(mdiVolumeOff, 192 - textWidth("MUTE", 12, { bold: true }) - 22, 4, 18, MUTED)}${text(192, 18, "MUTE", { size: 12, weight: "bold", color: MUTED, anchor: "end" })}`
-            : text(192, 18, formatDb(v.faderDb), { size: 13, weight: "bold", color: ink ?? v.color, anchor: "end" }),
-        ...meterBar({ x: bx, y: 30, length: w, thickness: 22, levels: v.levels, peaks: v.peaks, segments: 36, off: v.muted ? "#1a1c20" : undefined }),
-        ...meterScaleMarks(bx, 57, w, METER_TICKS),
+    return renderLevelStrip({
+        style: v.style,
+        name: source,
+        subName: target ? `→ ${target}` : undefined,
+        valueText: formatDb(v.faderDb),
+        position: v.fader,
+        color: v.color,
+        muted: v.muted,
+        levels: v.levels,
+        peaks: v.peaks,
+        vus: v.vus,
+        caption: v.caption,
+        header: v.header,
+        inverted: v.inverted,
         // The fader by its travel (-∞ = 0 %, +10 dB = 100 %), not on the meter's dBFS scale
-        faderBarH(bx, 86, w, v.fader, marker),
-    ];
-    // A send's tap (PRE/POST) small at the bottom right, under the scale
-    if (v.caption && !v.muted) parts.push(text(192, 81, v.caption, { size: 9, color: "#8a8a90", anchor: "end" }));
-    // A muted channel's meter may still move (it can be metered before the mute); dim it
-    if (v.muted) parts.push(`<rect x="${bx}" y="30" width="${w}" height="22" fill="#000" opacity="0.45"/>`);
-    return stripImage(parts, undefined, v.background);
+        positionBar: faderBarH,
+        background: v.background,
+    });
 }
-
-function classic(v: FaderView): string {
-    const parts: string[] = [];
-    if (v.vus.length === 1) parts.push(...vuMeter({ x: 40, y: 4, width: 120, height: 82, vu: v.vus[0], label: "MONO", id: "vm" }));
-    else {
-        parts.push(...vuMeter({ x: 4, y: 6, width: 94, height: 80, vu: v.vus[0], label: "LEFT", id: "vl" }));
-        parts.push(...vuMeter({ x: 102, y: 6, width: 94, height: 80, vu: v.vus[1], label: "RIGHT", id: "vr" }));
-    }
-    const caption = `${escapeXml(v.name.toUpperCase())} · ${v.muted ? "MUTE" : escapeXml(dbLabel(v))}`;
-    // Over an effect: a box behind the caption (letter-spaced, so a little wider than measured)
-    if (v.background) parts.push(shade(100 - textWidth(caption, 9) / 2 - 18, 88, textWidth(caption, 9) + 36, 13));
-    parts.push(`<text x="100" y="97" font-family="Arial,sans-serif" font-size="9" fill="${v.muted ? MUTED : "#bfa76a"}" text-anchor="middle" letter-spacing="1.5">${caption}</text>`);
-    return stripImage(parts, "#141210", v.background);
-}
-
-const dbLabel = (v: FaderView) => (v.caption ? `${formatDb(v.faderDb)} ${v.caption}` : formatDb(v.faderDb));
 
 /** Not ready: no mixer set up, mixer offline, or no channel chosen. */
 export function renderFaderMessage(kind: "setup" | "offline" | "choose", label: string, hint: string): string {
-    const icon = kind === "offline" ? mdiLanDisconnect : mdiTuneVertical;
-    const color = kind === "offline" ? MUTED : "#8a8a90";
-    return stripImage([mdi(icon, 16, 34, 32, color), text(60, 46, label, { size: 14, weight: "bold", maxWidth: 132 }), text(60, 64, hint, { size: 11, color: "#a4a4aa", maxWidth: 132 })]);
+    return renderLevelMessage(kind === "offline" ? mdiLanDisconnect : mdiTuneVertical, kind === "offline" ? "#ff5a5a" : "#8a8a90", label, hint);
 }
