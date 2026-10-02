@@ -1,6 +1,7 @@
 // <xac-connection-card> — the mixer connection, shared by all XR-C actions (global settings):
-// status line, the mixer's address, and a search that lists the mixers on the network.
-import { escapeHtml, nextRequestId, reloadPiSelects, sd, t } from "@rocklobster42195/streamdeck-kit/pi";
+// status line, the mixer's address, and a search that lists the mixers on the network. In the short
+// PI of an action with a settings window, "Change" opens the window at the card.
+import { escapeHtml, isSettingsWindow, nextRequestId, openSettingsWindow, reloadPiSelects, sd, t } from "@rocklobster42195/streamdeck-kit/pi";
 import type { ConnectionStatus, PiPush } from "../pi/protocol";
 import type { XAirInfo } from "xair-client";
 
@@ -32,7 +33,12 @@ export class XacConnectionCard extends HTMLElement {
                     <div class="xac-found"></div>
                 </div>
             </div>`;
+        // The window's menu lists the card; "#connection" opens the window at it
+        this.id = "connection";
+        this.dataset.windowSection = "pi.mixer";
         this.querySelector(".xac-conn-toggle")!.addEventListener("click", () => {
+            const hasWindow = !!document.querySelector("pi-more") && !isSettingsWindow();
+            if (!this.expanded && hasWindow && openSettingsWindow("connection")) return;
             this.expanded = !this.expanded;
             this.render();
         });

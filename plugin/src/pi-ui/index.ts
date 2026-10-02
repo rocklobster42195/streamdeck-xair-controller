@@ -1,5 +1,7 @@
 // Entry of the property inspector bundle (ui/pi.js): the kit's components plus XR-C's connection card.
-import { definePiComponents, initConditionalVisibility, sd, translateDom, type PiChoice, type PiChoiceOption } from "@rocklobster42195/streamdeck-kit/pi";
+// The same page runs as the short PI and, with "?window", as the settings window (the kit's
+// src/pi/window.ts): sections with class "pi-win" show only there.
+import { definePiComponents, initConditionalVisibility, initSettingsWindow, sd, settingsWindowShown, translateDom, type PiChoice, type PiChoiceOption } from "@rocklobster42195/streamdeck-kit/pi";
 import { mdiCardText, mdiChartBar, mdiChartDonut, mdiCircleSlice3, mdiGauge } from "@mdi/js";
 import { XacConnectionCard } from "./connection-card";
 
@@ -25,4 +27,7 @@ sd.onReady(() => {
         }),
     );
     document.body.hidden = false;
+    settingsWindowShown();
 });
+
+initSettingsWindow({ name: "XR-C" });
