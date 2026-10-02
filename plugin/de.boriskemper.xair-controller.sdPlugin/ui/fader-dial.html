@@ -36,14 +36,13 @@
     ]'></pi-choice>
   </pi-section>
 
-  <pi-section class="pi-win" title="pi.background">
-    <pi-select setting="background" source="backgrounds" placeholder="pi.background_auto"></pi-select>
-    <div class="pi-hint pi-padded" data-i18n="pi.background_hint"></div>
-  </pi-section>
+  <pi-panorama class="pi-win"></pi-panorama>
 
   <pi-section class="pi-win" title="pi.dial_controls">
     <pi-range setting="step" min="0.5" max="6" step="0.5" default="1" unit=" dB" label="pi.dial_step"></pi-range>
   </pi-section>
+
+  <pi-panorama class="pi-pi-only" summary></pi-panorama>
 
   <pi-more></pi-more>
 

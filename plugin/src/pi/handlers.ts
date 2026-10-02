@@ -1,12 +1,11 @@
 // XR-C's part of the kit's PI bridge: connection status, the strip list for <pi-select>, and the
-// mixer search for the connection card, and the dial backgrounds (Panorama effects).
-import streamDeck from "@elgato/streamdeck";
-import { backgroundOptions } from "@rocklobster42195/streamdeck-kit";
+// mixer search for the connection card, and the dials' Panorama section (the row's effect).
 import { piBridge, type PiPushMessage } from "@rocklobster42195/streamdeck-kit/bridge";
 import { discover, sendId, stripId, stripRefs } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { isRightHalf, mainFirst } from "../mixer/strip-order";
 import type { ConnectionStatus, PiPush, StripKindLabel } from "./protocol";
+import { panoramaRows } from "../render/panorama";
 
 export function initPiBridge(): void {
     piBridge.init();
@@ -15,8 +14,8 @@ export function initPiBridge(): void {
         const mixers = await discover({ timeoutMs: 1500 }).catch(() => []);
         await piBridge.reply(json({ event: "discover-result", requestId: msg.requestId as number, mixers }));
     });
-    // Dial backgrounds: like the neighbour (default), none, or one of the kit's Panorama effects
-    piBridge.registerOptions("backgrounds", () => backgroundOptions({ auto: streamDeck.i18n.t("pi.background_auto"), none: streamDeck.i18n.t("pi.background_none") }));
+    // The dials' Panorama section (<pi-panorama>): the row's effect, dials and settings
+    panoramaRows.attachPi(piBridge);
     piBridge.registerOptions("strips", () => {
         const strips = mixerConnection.strips;
         const mixer = mixerConnection.current;

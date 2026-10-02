@@ -1,6 +1,7 @@
 // Base for XR-C dials: instances, the not-ready states, a strip meter while one is shown, a
-// deduplicated redraw at the shared frame rate, and the Panorama effect behind the dial (shared
-// with neighbouring dials, also of other plugins). Subclasses say what to show and how to react.
+// deduplicated redraw at the shared frame rate, and the Panorama effect behind the dial (the row's
+// effect, shared with the other dials of the row, also of other plugins). Subclasses say what to
+// show and how to react.
 import streamDeck, {
     type DialAction,
     type DialDownEvent,
@@ -12,10 +13,10 @@ import streamDeck, {
     type WillDisappearEvent,
 } from "@elgato/streamdeck";
 import type { JsonObject } from "@elgato/utils";
-import { frames } from "@rocklobster42195/streamdeck-kit";
+import { frames, rowStateFromSettings } from "@rocklobster42195/streamdeck-kit";
 import type { StripRef } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
-import { onNeighboursChange, panorama, resolveDialBackgrounds } from "../render/panorama";
+import { panorama, panoramaRows } from "../render/panorama";
 import { MeterFeed, type MeterFrame } from "../mixer/meter-feed";
 import { renderFaderMessage, renderFaderStrip, type FaderView } from "../render/fader-strip";
 
@@ -24,30 +25,10 @@ export type DialInstance<S extends JsonObject> = {
     settings: S;
     feed: MeterFeed;
     lastImage?: string;
-    /** Where the dial sits (for the Panorama). */
+    /** Where the dial sits (its row is the device's dials). */
     device: string;
     column: number;
-    /** The effect behind it, if any (resolved from its "background" setting). */
-    effect?: string;
 };
-
-/** Every XR-C dial (fader and send) with a way to redraw it: the Panorama looks at all of them. */
-const allDials = new Map<string, { inst: DialInstance<JsonObject>; redraw: () => void }>();
-
-/** Work out every dial's effect (autos follow their neighbours) and join or leave the Panorama. */
-function arrangeBackgrounds(): void {
-    const spots = [...allDials].map(([context, d]) => ({ context, device: d.inst.device, column: d.inst.column, background: typeof d.inst.settings.background === "string" ? d.inst.settings.background : undefined }));
-    const effects = resolveDialBackgrounds(spots);
-    for (const [context, d] of allDials) {
-        const effect = effects.get(context);
-        if (effect === d.inst.effect) continue;
-        d.inst.effect = effect;
-        if (effect) panorama.join(context, d.inst.device, d.inst.column, effect, {}, d.redraw);
-        else panorama.leave(context);
-        d.redraw();
-    }
-}
-onNeighboursChange(arrangeBackgrounds);
 
 /** What to draw: a strip view, or a message (setup/offline are handled by the base). */
 export type DialContent = { view: Omit<FaderView, "levels" | "peaks" | "vus"> } | { choose: true };
@@ -75,8 +56,20 @@ export abstract class MixerDial<S extends JsonObject> extends SingletonAction<S>
         const id = ev.action.id;
         const inst: DialInstance<S> = { action: ev.action, settings: ev.payload.settings, feed: new MeterFeed(), device: ev.action.device.id, column: ev.action.coordinates?.column ?? 0 };
         this.instances.set(id, inst);
-        allDials.set(id, { inst: inst as unknown as DialInstance<JsonObject>, redraw: () => this.render(id) });
-        arrangeBackgrounds();
+        panoramaRows.add(id, {
+            device: inst.device,
+            column: inst.column,
+            label: () => {
+                const c = mixerConnection.state === "online" ? this.content(inst) : undefined;
+                return c && "view" in c ? c.view.name : "";
+            },
+            state: () => rowStateFromSettings(inst.settings),
+            save: (patch) => {
+                inst.settings = { ...inst.settings, ...patch } as S;
+                void inst.action.setSettings(inst.settings);
+            },
+            redraw: () => this.render(id),
+        });
         this.refresh(id);
     }
 
@@ -84,16 +77,14 @@ export abstract class MixerDial<S extends JsonObject> extends SingletonAction<S>
         this.instances.get(ev.action.id)?.feed.stop();
         frames.stop(`${this.key}-${ev.action.id}`);
         this.instances.delete(ev.action.id);
-        allDials.delete(ev.action.id);
-        panorama.leave(ev.action.id);
-        arrangeBackgrounds();
+        panoramaRows.remove(ev.action.id);
     }
 
     override onDidReceiveSettings(ev: DidReceiveSettingsEvent<S>): void {
         const inst = this.instances.get(ev.action.id);
         if (!inst) return;
         inst.settings = ev.payload.settings;
-        arrangeBackgrounds();
+        panoramaRows.changed(ev.action.id);
         this.refresh(ev.action.id);
     }
 
@@ -149,8 +140,10 @@ export abstract class MixerDial<S extends JsonObject> extends SingletonAction<S>
         if ("choose" in c) return renderFaderMessage("choose", t("key.choose"), t("key.choose_hint"));
         const { ref } = this.meterOf(inst.settings);
         const meter: MeterFrame = inst.feed.frame(ref && MeterFeed.isStereo(ref) ? 2 : 1);
-        // The Panorama's slice behind the dial (from XR-C's engine, or the plugin that leads the group)
-        const background = inst.effect && panorama.isActive(inst.action.id) ? panorama.renderSlice(inst.action.id) : undefined;
+        // The row's Panorama behind the dial (from XR-C's engine, or the plugin that leads the group);
+        // none on a dial that doesn't take part (the effect runs on behind its neighbours)
+        const id = inst.action.id;
+        const background = panoramaRows.effectOf(id) && panoramaRows.isMember(id) && panorama.isActive(id) ? panorama.renderSlice(id) : undefined;
         return renderFaderStrip({ ...c.view, levels: meter.levels, peaks: meter.peaks, vus: meter.vus, background });
     }
 }

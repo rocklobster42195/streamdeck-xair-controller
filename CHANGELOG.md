@@ -5,6 +5,7 @@ All notable changes to XR-C (X-Air Controller) are documented here.
 ## [Unreleased]
 
 ### Added
+- **One Panorama per row** (from the kit): the Fader and Send dials' Panorama section chooses the effect for the whole row of dials, also over other plugins' dials, with a checkbox per dial. Replaces the Background list ("Like the neighbour" …).
 - **Short settings panels with a settings window** on the Fader and Send dials (as in HA-C and MA-C, from the kit): the panel keeps the channel and the look; name line, background and dial controls are in the window behind "More settings …", with a menu. The mixer connection is one line while connected; "Change" opens the window at it.
 - Tested on a real XR12 (firmware 1.18): names, colours, meters per channel (also stereo pairs and Main LR), fader changes.
 - The fader shows its **travel** as its own bar (-∞ = 0 %, 0 dB = 75 % with a tick, +10 dB = 100 %) on the Fader dial and the Channel key's meter look, instead of a marker on the meter's dBFS scale.
