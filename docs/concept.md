@@ -20,7 +20,7 @@ X32/M32 support may come later; the client is designed so it can be added.
 | Display name | **X-Air Controller**, public short name **XR-C** (internally XAC; pattern <system>-C, decided 2026-09-27) |
 | UUID | `de.boriskemper.xair-controller` (the old internal prototype, never public) |
 | Repository | `rocklobster42195/streamdeck-xair-controller`, private until release |
-| Folder | `C:\dev\xair-controller` (fresh start, without the old prototype's history) |
+| Folder | `C:\dev\streamdeck\xair-controller` (fresh start, without the old prototype's history) |
 | Logo | the Rocklobster lobster on **Persian Green `#00ACA8`** from the house palette (a variant with fader knobs is worth trying). Logo colors come from the house palette; Sage `#87AE73` is the company color. |
 | Legal | "X-Air" is a Behringer trademark: disclaimer (not affiliated with Behringer or Music Tribe), no Behringer logos |
 
@@ -89,7 +89,7 @@ Each dial is set to one channel → target (bus 1–6 or FX 1–4, depending on 
 - Pre- or post-fader, post by default.
 - Also available as a thin bar on the Mute key, optional.
 - Performance: at most ~15 fps for all keys together, through the shared frame ticker. Nothing is redrawn while the signal is static. `/meters` is subscribed only while a meter is visible.
-- **Styles, chosen 2026-09-28** from the mockups `C:\dev\mac\sim-out\previews\xac-meter-proposals.png`:
+- **Styles, chosen 2026-09-28** from the mockups `C:\dev\streamdeck\music-assistant-controller\sim-out\previews\xac-meter-proposals.png`:
   - **Dial, "Digital" (D1, default):**
     - segmented bars lying flat, with green, yellow and red zones;
     - peak hold as a line;
@@ -109,7 +109,7 @@ Each dial is set to one channel → target (bus 1–6 or FX 1–4, depending on 
   - Muted only through a mute group or a DCA: a red frame instead of the fill.
 - **Mute Group:** "MG n" or a custom name, red when active, the member channels in small type.
 - **Snapshot:** number and mixer name. By default a press arms the key (it pulses yellow for 2 s) and a second press loads. "Immediate" and "long press" can be chosen instead. The last loaded snapshot is highlighted.
-  - **Saving (decided 2026-09-29, grill `C:\dev\streamdeck-kit\notes\2026-09-29-deckbus-readme-snapshot-sysaudio-grill.md`):**
+  - **Saving (decided 2026-09-29, grill `C:\dev\streamdeck\streamdeck-kit\notes\2026-09-29-deckbus-readme-snapshot-sysaudio-grill.md`):**
     - It uses the same slot as loading and is an option in the PI, **off by default**, because it overwrites a stored scene and cannot be undone.
     - A long press (~1.5 s) arms saving: the key pulses red and shows "SAVE?". A short press within 3 s confirms; otherwise saving is cancelled.
     - Afterwards the key briefly shows a check mark and the name. The existing name is kept.
@@ -136,7 +136,7 @@ The mixer sends a color **index 0–15**, not hex: 0 off, 1–7 red, green, yell
 
 ## Kit bus "deckbus"
 
-XAC is the first partner for MAC on the bus; SC stays out for now. The design is in the MQC concept ("Kit bus") and in `C:\dev\streamdeck-kit\notes\2026-09-28-kit-bus-grill.md`.
+XAC is the first partner for MAC on the bus; SC stays out for now. The design is in the MQC concept ("Kit bus") and in `C:\dev\streamdeck\streamdeck-kit\notes\2026-09-28-kit-bus-grill.md`.
 - **Meters:**
   - XAC offers all channels in its bus state (`streams`, with live mixer names). MAC's Panorama dial picks one as its "Audio source".
   - XAC asks the mixer for a channel's meters only while a subscriber exists, and subscribers subscribe only while a consumer is visible.
