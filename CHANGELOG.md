@@ -4,6 +4,9 @@ All notable changes to XR-C (X-Air Controller) are documented here.
 
 ## [Unreleased]
 
+### Fixed
+- **Fixed: a dial in a shared Panorama stayed black** after its plugin (or another one in the row) restarted, until the plugin leading the row restarted too (kit 0.1.0-alpha.7).
+
 ### Added
 - The Fader and Send dials draw with the kit's level strip (shared with SA-C); they look exactly as before.
 - **One Panorama per row** (from the kit): the Fader and Send dials' Panorama section chooses the effect for the whole row of dials, also over other plugins' dials, with a checkbox per dial. Replaces the Background list ("Like the neighbour" …).
