@@ -30,4 +30,4 @@ sd.onReady(() => {
     settingsWindowShown();
 });
 
-initSettingsWindow({ name: "XR-C" });
+initSettingsWindow({ name: "XR-C", helpUrl: "https://github.com/rocklobster42195/streamdeck-xair-controller" });
