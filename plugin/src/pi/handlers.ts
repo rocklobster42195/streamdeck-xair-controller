@@ -1,6 +1,7 @@
 // XR-C's part of the kit's PI bridge: connection status, the strip list for <pi-select>, and the
 // mixer search for the connection card, and the dials' Panorama section (the row's effect).
-import { piBridge, type PiPushMessage } from "@rocklobster42195/streamdeck-kit/bridge";
+import { deckPeers } from "../bus/xac-bus";
+import { registerDiagnostics, piBridge, type PiPushMessage } from "@rocklobster42195/streamdeck-kit/bridge";
 import { discover, sendId, stripId, stripRefs } from "xair-client";
 import { mixerConnection } from "../mixer/connection";
 import { isRightHalf, mainFirst } from "../mixer/strip-order";
@@ -9,6 +10,8 @@ import { panoramaRows } from "../render/panorama";
 
 export function initPiBridge(): void {
     piBridge.init();
+    // "Diagnostics" in the settings window: the log, a report to copy, the issue page
+    registerDiagnostics(piBridge, { issueUrl: "https://github.com/rocklobster42195/streamdeck-xair-controller/issues", peers: deckPeers });
     piBridge.handle("reconnect", () => mixerConnection.reconnect());
     piBridge.handle("discover", async (msg) => {
         const mixers = await discover({ timeoutMs: 1500 }).catch(() => []);

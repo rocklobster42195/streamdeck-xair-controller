@@ -99,3 +99,8 @@ function serveMeters(): void {
         }
     });
 }
+
+/** The other plugins on deckbus (name and version), for the diagnostics report. */
+export function deckPeers(): { name: string; version: string }[] {
+    return xacBus.peers().map((p) => ({ name: p.name, version: p.version }));
+}

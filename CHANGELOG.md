@@ -9,6 +9,7 @@ All notable changes to XR-C (X-Air Controller) are documented here.
 - **Fixed: a dial in a shared Panorama stayed black** after its plugin (or another one in the row) restarted, until the plugin leading the row restarted too (kit 0.1.0-alpha.7).
 
 ### Added
+- **Diagnostics in the settings window:** a collapsed field at the end with the end of the plugin's log (warnings and errors marked, a filter), a small copy icon at the top right that copies a report (versions of the plugin, Stream Deck and the other plugins, then the log; tokens, passwords and e-mail addresses hidden), "Show log file" (opens the file manager) and "Report an issue" (copies the report and opens the issue page).
 - The Fader and Send dials draw with the kit's level strip (shared with SA-C); they look exactly as before.
 - **One Panorama per row** (from the kit): the Fader and Send dials' Panorama section chooses the effect for the whole row of dials, also over other plugins' dials, with a checkbox per dial. Replaces the Background list ("Like the neighbour" …).
 - **Short settings panels with a settings window** on the Fader and Send dials (as in HA-C and MA-C, from the kit): the panel keeps the channel and the look; name line, background and dial controls are in the window behind "More settings …", with a menu. The mixer connection is one line while connected; "Change" opens the window at it.
