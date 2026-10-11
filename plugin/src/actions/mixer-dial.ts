@@ -116,11 +116,18 @@ export abstract class MixerDial<S extends JsonObject> extends SingletonAction<S>
         if (inst.feed.active) {
             frames.run(`${this.key}-${id}`, () => {
                 if (this.instances.get(id) !== inst || !inst.feed.active) return false;
-                this.render(id);
+                // With a Panorama behind the dial its own tick (10 a second) draws it, meter included:
+                // a second clock beside it only doubled the images sent
+                if (!this.panoramaDraws(id)) this.render(id);
                 return true;
             });
         }
         this.render(id);
+    }
+
+    /** Whether the row's Panorama is what redraws this dial (its slice arrives with every tick). */
+    private panoramaDraws(id: string): boolean {
+        return !!panoramaRows.effectOf(id) && panoramaRows.isMember(id) && panorama.isActive(id);
     }
 
     protected render(id: string): void {
