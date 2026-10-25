@@ -3,7 +3,7 @@
 node_modules/
 docs/fixtures/
 notes/
-CLAUDE.md
+CLAUDE.local.md
 
 # Build output
 **/*.sdPlugin/bin/

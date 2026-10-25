@@ -2,13 +2,17 @@
 
 **Your Behringer X-Air mixer on your Stream Deck: faders on dials, mutes on keys, live meters everywhere.**
 
+[![Latest, beta included](https://img.shields.io/github/v/release/rocklobster42195/streamdeck-xair-controller?include_prereleases&label=latest&color=00ACA8)](https://github.com/rocklobster42195/streamdeck-xair-controller/releases)
+[![Ko-fi](https://img.shields.io/badge/support-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/rocklobster42195)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 ![XR-C on a Stream Deck +: live meters, a fader being moved, a channel muted](docs/screenshots/xr-c.gif)
 
 XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** onto an Elgato Stream Deck. Each channel keeps the name and colour you gave it on the mixer. Dials set levels with a live meter in the display, and keys mute channels, switch mute groups or load snapshots. Anything you change on the mixer or in its app shows up on the deck immediately, and the other way round.
 
-> **Status: in development.** XR-C isn't released yet. Everything below works against a mixer emulator; testing on real hardware is under way.
+**Status:** alpha. The features below are tried on a real mixer (a Behringer XR12) and against a mixer emulator.
 
-*XR-C is an unofficial community plugin. It is not affiliated with or endorsed by Behringer, Midas, Music Tribe or Elgato. "X-Air" is a trademark of Music Tribe.*
+> **Disclaimer:** This is an independent, community-made plugin. It is not affiliated with, endorsed by, or officially connected to Behringer, Midas, Music Tribe or Elgato in any way. "X-Air" is a trademark of Music Tribe.
 
 ---
 
@@ -25,6 +29,9 @@ XR-C puts the channels of a **Behringer XR12, XR16, XR18** or **Midas MR18** ont
 - [Troubleshooting](#troubleshooting)
 - [Planned](#planned)
 - [Development](#development)
+- [Part of a family](#part-of-a-family)
+- [Ideas and feedback](#ideas-and-feedback)
+- [Support](#support)
 - [Credits and licence](#credits-and-licence)
 
 ---
@@ -274,7 +281,34 @@ XR-C is built on two packages of its own:
 - [`xair-client`](https://github.com/rocklobster42195/xair-client): the X-Air OSC client, with an emulator for tests.
 - [`@rocklobster42195/streamdeck-kit`](https://github.com/rocklobster42195/streamdeck-kit): shared Stream Deck building blocks such as meters, gauges and the settings panel kit.
 
-Both are linked from local checkouts until they are published on npm. The GIF at the top comes from the real plugin running against the emulator, with invented channel names.
+`xair-client` is linked from a local checkout until it is published on npm; the kit comes from npm. The GIF at the top comes from the real plugin running against the emulator, with invented channel names.
+
+## Part of a family
+
+X-Air Controller is one of a small family of Stream Deck plugins. They are built on the same open foundation, **[streamdeck-kit](https://github.com/rocklobster42195/streamdeck-kit)** (MIT, on npm), so they look and feel the same and share what is worth sharing.
+
+| | Plugin | For | Status |
+|---|---|---|---|
+| ![Sonos Controller](https://img.shields.io/badge/%20%20%20-87AE73?style=flat-square) | [Sonos Controller](https://github.com/rocklobster42195/streamdeck-sonos-controller) | Sonos speakers | on the Marketplace, 0.5.0 in beta |
+| ![Music Assistant Controller](https://img.shields.io/badge/%20%20%20-009FDF?style=flat-square) | [Music Assistant Controller](https://github.com/rocklobster42195/streamdeck-music-assistant-controller) | your Music Assistant server and its players | alpha |
+| ![System Audio Controller](https://img.shields.io/badge/%20%20%20-E14190?style=flat-square) | [System Audio Controller](https://github.com/rocklobster42195/streamdeck-system-audio-controller) | your computer's sound: volume, apps, microphone | beta |
+| ![X-Air Controller](https://img.shields.io/badge/%20%20%20-00ACA8?style=flat-square) | **X-Air Controller** (this plugin) | Behringer X-Air and Midas mixers | alpha |
+| ![Home Assistant Controller](https://img.shields.io/badge/%20%20%20-005DA0?style=flat-square) | [Home Assistant Controller](https://github.com/rocklobster42195/streamdeck-home-assistant-controller) | your smart home, also over MQTT | alpha |
+
+What they have in common:
+
+- **The same look and feel.** Keys and dials are drawn by the same kit: one symbol size, the same colours, errors always in the same place, and a settings window in one style with diagnostics, in English, German and Spanish.
+- **One Panorama across plugins.** Dials of different plugins in one row share an effect (particles, a picture, a webcam, …) as if they were one display.
+- **They find each other.** Through [deckbus](#works-with-other-plugins-deckbus) the plugins share players and colours without any setup, on your computer only.
+- **Reusable.** The kit is open, MIT licensed and on npm as [`@rocklobster42195/streamdeck-kit`](https://www.npmjs.com/package/@rocklobster42195/streamdeck-kit). If you build Stream Deck plugins yourself, take what helps.
+
+## Ideas and feedback
+
+Ideas from outside are very welcome: they show what I stopped seeing on my own deck. Please open an [issue](https://github.com/rocklobster42195/streamdeck-xair-controller/issues/new/choose) with your idea or problem. Small fixes as pull requests are welcome too; for bigger things, please start with an issue. Code that every plugin could use (drawing, effects, the settings window) belongs in [streamdeck-kit](https://github.com/rocklobster42195/streamdeck-kit).
+
+## Support
+
+This plugin started as a tool for my own Stream Deck. It is free and MIT licensed, and everyone is welcome to use it. If you like it, a coffee and a beer are always welcome: **[ko-fi.com/rocklobster42195](https://ko-fi.com/rocklobster42195)**.
 
 ## Credits and licence
 
