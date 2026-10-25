@@ -2,7 +2,7 @@
 import dgram from "node:dgram";
 import fs from "node:fs";
 
-const HOST = process.argv[2] ?? "192.168.7.20";
+const HOST = process.argv[2] ?? "192.168.1.50";
 const OUT = process.argv[3] ?? "xair-dump.json";
 const PORT = 10024;
 
