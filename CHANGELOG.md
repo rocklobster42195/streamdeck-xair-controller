@@ -1,8 +1,10 @@
 # Changelog
 
-All notable changes to XR-C (X-Air Controller) are documented here.
+All notable changes to the X-Air Controller are documented here.
 
 ## [Unreleased]
+
+## [0.1.0-alpha.1] — 2026-10-25
 
 ### Fixed
 - **Fixed: A new cover's colour reached the Panorama late: the colour fade took four seconds instead of one (kit 0.1.0-alpha.23).**
