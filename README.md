@@ -281,7 +281,7 @@ XR-C is built on two packages of its own:
 - [`xair-client`](https://github.com/rocklobster42195/xair-client): the X-Air OSC client, with an emulator for tests.
 - [`@rocklobster42195/streamdeck-kit`](https://github.com/rocklobster42195/streamdeck-kit): shared Stream Deck building blocks such as meters, gauges and the settings panel kit.
 
-`xair-client` is linked from a local checkout until it is published on npm; the kit comes from npm. The GIF at the top comes from the real plugin running against the emulator, with invented channel names.
+The GIF at the top comes from the real plugin running against the emulator, with invented channel names.
 
 ## Part of a family
 
